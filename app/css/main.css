@@ -1,0 +1,629 @@
+@font-face {
+    font-family: 'boostsskregular';
+    src: url('boost/boostssk-regular-webfont.eot');
+    src: url('boost/boostssk-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('boost/boostssk-regular-webfont.woff') format('woff'),
+         url('boost/boostssk-regular-webfont.ttf') format('truetype'),
+         url('boost/boostssk-regular-webfont.svg#boostsskregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+html, body{
+	margin:0px;
+	position: relative;
+	overflow: hidden;
+	background-color: white;
+}
+
+
+/*-------START Header------------*/
+.header{
+	position: absolute;
+	width: 100%;
+	height: 44px;
+	display: inline;
+	top: 0;
+	z-index: 5;
+	border-bottom: 1px solid lightgrey;
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+
+}
+
+.gratiiLogo{
+	position: relative;
+	width: 99px;
+	height: 30px;
+	background-image:url('../images/gratiiColorShadow.png');
+	background-size: 99px 30px;
+	margin-left: 5%;
+	margin-top: 7px;
+	display: inline-block;
+}
+
+.gratiiScore{
+	position: relative;
+	width: 78px;
+	height: 30px;
+	font-family: 'boostsskregular';
+	font-size: 24px;
+	margin-top: 10px;
+	margin-right: 10px;
+	color: #212121;
+	text-shadow: 1px 1px 0px lightgrey;
+	text-align: right;
+	float: right;
+	display: inline-block;
+}
+
+.gratiiCoin{
+	position: relative;
+	width: 25px;
+	height: 25px;
+	background-image:url('../images/gratiiCoinIconiOSGradient.png');
+	background-size: 25px 25px;
+	margin-top: 11px;
+	margin-right: 5%;
+	float: right;
+	display: inline-block;
+}
+/*-------END Header------------*/
+
+
+
+
+
+/*-------START GLOBAL---------*/
+.main{
+	position: absolute;
+	background-color: grey;
+	width: 400%;
+	top: 44;
+	bottom: 50;
+	margin-left: 0px;
+	overflow: hidden;
+}
+
+.page{
+	position: relative;
+	background-color: white;
+	width: 25%;
+	height: 100%;
+	float: left;
+}
+
+.pageList{
+	position: relative;
+	background-color: red;
+	width: 100%;
+	float: left;
+}
+
+.pageList#arcade{
+	background-color: white;
+}
+
+.pageList#auctions{
+	background-color: white;
+}
+
+.pageList#messages{
+	background-color: blue;
+}
+
+.pageList#profile{
+	background-color: lightpink;
+}
+
+ul.list{
+	list-style:none;
+	padding:0px;
+	margin:0;
+	text-align: left;
+}
+
+#arcadeList li{
+	height: 150px;
+	color: white;
+	font-weight: bold;
+	font-size: 30px;
+}
+
+#scroller{
+	width: 200%;
+}
+/*-------END GLOBAL---------*/
+
+
+
+
+
+/*--------START Arcade--------------*/
+#arcadeList li{
+	position: relative;
+	color: white;
+	font-weight: bold;
+	font-size: 30px;
+	max-height: 400px;
+	opacity: 1;
+}
+
+.arcadeFrame{
+	position: relative;
+	width: 50%;
+	height: 100%;
+	float: left;
+	background-color: black;
+}
+
+.arcadeContent{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-width: 800px;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	margin:0px auto;
+	background-color: black;
+}
+
+/*.arcadeFrame{
+	width: 50%;
+	height:100%;
+	float: left;
+	text-decoration: none;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-color: #e2e2e2;
+}*/
+
+.challengeable_0{
+	/*position: relative;
+	width:35px;
+	height: 35px;
+	float: right;
+	margin-right: 25px;
+	margin-top: 25px;
+	border: 1px solid red;*/
+}
+
+.challengeable_1{
+	position: relative;
+	width:100px;
+	height: 85px;
+/*	float: right;*/
+	margin-left: 5px;
+	margin-top: 0px;
+	background-image: url('../images/boxingGloves1.png');
+	background-size: 100px 85px;
+	background-repeat: no-repeat;
+	opacity: 1;
+}
+
+.myScores{
+	font-family: 'boostsskregular';
+	color:white;
+	font-size: 12px;
+	background-color: black;
+}
+
+.myHighScore{
+	position: relative;
+	margin-left: 5px;
+	margin-top: 5px;
+	float: left;
+}
+
+.myTotalGratii{
+	position: relative;
+	margin-top: 5px;
+	margin-right: 5px;
+	float: right;
+}
+
+.top10{
+	height: 80%;
+	width: 100%;
+	font-size: 12px;
+	font-family: 'boostsskregular';
+	max-width: 800px;
+}
+
+td{
+	border: 1px solid grey;
+	background-color: white;
+}
+/*--------END Arcade--------------*/
+
+
+
+
+/*---------START Auctions-----------*/
+	/*--START Auction Nav--*/
+.auctionScopeWrapper{
+	position: relative;
+	width: 100%;
+	height: 40px;
+	background-color: #efefef;
+	z-index: 9;
+	opacity: 1;
+}
+
+.auctionScopeButtonWrapper{
+	position: relative;
+	width: 90%;
+	height: 25px;
+	margin:0 auto;
+	top: 7px;
+}
+
+.auctionScopeButton{
+	position: relative;
+	height: 25px;
+	width: 33%;
+	float: left;
+	line-height: 25px;
+	font-family: 'boostsskregular';
+	text-align: center;
+	color: blue;
+	box-sizing: border-box; 
+	margin: 0;
+}
+
+.auctionScopeButton#live{
+	position: relative;
+	background-color: blue;
+	color: white;
+	border-top: 1px solid blue;
+	border-bottom: 1px solid blue;
+	border-left: 1px solid blue;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+.auctionScopeButton#upnext{
+	position: relative;
+	border:1px solid blue;
+}
+.auctionScopeButton#past{
+	position: relative;
+	border-top: 1px solid blue;
+	border-bottom: 1px solid blue;
+	border-right: 1px solid blue;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+#wrapper1{
+	position: relative;
+	height: 90%;
+}
+	/*--END Auction Nav--*/
+
+
+	/*--Start Auction--*/
+#auctionList li{
+	position: relative;
+	color: white;
+	font-weight: bold;
+	font-size: 30px;
+	max-height: 400px;
+	opacity: 1;
+}
+
+.auctionFrame{
+	position: relative;
+	width: 50%;
+	height: 100%;
+	float: left;
+	background-color: black;
+}
+
+.auctionFrame#a .auctionContent{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-width: 800px;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	margin:0px auto;
+	background-color: black;
+}
+
+.auctionFrame#b .auctionContent{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-width: 800px;
+	margin:0px auto;
+	background-color: yellow;
+}
+
+.auctionTitleWrapper{
+	position: relative;
+	width: 100%;
+	height:30px;
+	background-color: black;
+	color: white;
+	font-size: 20px;
+	font-family: 'boostsskregular';
+	line-height: 30px;
+	text-align: center;
+}
+
+.auctionStatsWrapper{
+	position: relative;
+	width: 100%;
+	height:40px;
+	background-color: #efefef;
+	color: white;
+	border-bottom: 1px solid white;
+	box-shadow: 0px 3px 3px grey;
+	margin-bottom: 10px;
+}
+
+	/*--END Auction--*/
+/*---------END Auctions-----------*/
+
+
+
+
+/*---------START Profile-----------*/
+	/*--START Profile Nav--*/
+.profileScopeWrapper{
+	position: relative;
+	width: 100%;
+	height: 40px;
+	background-color: #efefef;
+	z-index: 9;
+	opacity: 1;
+}
+
+.profileScopeButtonWrapper{
+	position: relative;
+	width: 90%;
+	height: 25px;
+	margin:0 auto;
+	top: 7px;
+}
+
+.profileScopeButton{
+	position: relative;
+	height: 25px;
+	width: 50%;
+	float: left;
+	line-height: 25px;
+	font-family: 'boostsskregular';
+	text-align: center;
+	color: blue;
+	box-sizing: border-box; 
+	margin: 0;
+}
+
+.profileScopeButton#settings{
+	position: relative;
+	background-color: blue;
+	color: white;
+	border-top: 1px solid blue;
+	border-bottom: 1px solid blue;
+	border-left: 1px solid blue;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+
+.profileScopeButton#transactions{
+	position: relative;
+	border-top: 1px solid blue;
+	border-bottom: 1px solid blue;
+	border-right: 1px solid blue;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+#wrapper3{
+	position: relative;
+	height: 90%;
+}
+	/*--END Profile Nav--*/
+
+
+	/*--Start Profile--*/
+/*#auctionList li{
+	position: relative;
+	color: white;
+	font-weight: bold;
+	font-size: 30px;
+	max-height: 400px;
+	opacity: 1;
+}
+
+.auctionFrame{
+	position: relative;
+	width: 50%;
+	height: 100%;
+	float: left;
+	background-color: black;
+}
+
+.auctionFrame#a .auctionContent{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-width: 800px;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	margin:0px auto;
+	background-color: black;
+}
+
+.auctionFrame#b .auctionContent{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-width: 800px;
+	margin:0px auto;
+	background-color: yellow;
+}
+
+.auctionTitleWrapper{
+	position: relative;
+	width: 100%;
+	height:30px;
+	background-color: black;
+	color: white;
+	font-size: 20px;
+	font-family: 'boostsskregular';
+	line-height: 30px;
+	text-align: center;
+}
+
+.auctionStatsWrapper{
+	position: relative;
+	width: 100%;
+	height:40px;
+	background-color: #efefef;
+	color: white;
+	border-bottom: 1px solid white;
+	box-shadow: 0px 3px 3px grey;
+	margin-bottom: 10px;
+}
+*/
+	/*--END Profile--*/
+/*---------END Profile-----------*/
+
+
+
+
+/*-----------START Footer------------*/
+.footer{
+	background-color: red;
+	position: absolute;
+	width: 100%;
+	height: 50px;
+	bottom: 0;
+	z-index: 5;
+	border-top: 1px solid lightgrey;
+	background: rgb(229,229,229); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(229,229,229,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(229,229,229,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(229,229,229,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+}
+
+.navItem{
+	position: relative;
+	width: 80px;
+	float: left;
+	height: 100%;
+	margin-right: calc(((100% - 320px) / 4)/2);
+	margin-left: calc(((100% - 320px) / 4)/2);
+}
+
+.navIcon{
+	position: relative;
+	height: 30px;
+	margin: 0px auto;
+	margin-top: 3px;
+	opacity: .5;
+}
+
+.navIcon#arcade{
+	width: 35px;
+	background-image: url('../images/Flaticon/joystick2.png');
+	background-size: 35px 30px;
+	background-repeat: no-repeat;
+	opacity: 1;
+}
+
+.navIcon#auctions{
+	width: 40px;
+	background-image: url('../images/Flaticon/dollar22.png');
+	background-size: 40px 30px;
+	background-repeat: no-repeat;
+}
+
+.navIcon#inbox{
+	width: 42px;
+	background-image: url('../images/Flaticon/dollar48.png');
+	background-size: 42px 30px;
+	background-repeat: no-repeat;
+}
+
+.navIcon#profile{
+	width: 30px;
+	background-image: url('../images/Flaticon/user62.png');
+	background-size: 30px 30px;
+	background-repeat: no-repeat;
+}
+
+.navText{
+	position: relative;
+	color: blue;
+	font-family: 'boostsskregular', arial;
+	height:12px;
+	font-size: 12px;
+	text-align: center;
+	margin-top: 0px;
+	opacity: .5;
+}
+
+.navText#arcade{
+	color:red;
+	opacity: 1;
+}
+/*------------END Footer--------------*/
+
+
+
+
+
+
+
+
+/*---------START iScroll Indicator-------------*/
+#indicator, #indicator > li {
+	display:block; float:left;
+	list-style:none;
+}
+
+#indicator {
+	position: relative;
+	margin-top: -17px;
+}
+
+#indicator > li {
+	width:10px; height:10px;
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	-o-border-radius:6px;
+	border-radius:6px;
+	background:white;
+	overflow:hidden;
+	margin-right:6px;
+}
+
+#indicator > li.active {
+	width:9px; height:9px;
+	background:#888;
+	border: 1px solid white;
+}
+
+#indicator > li:last-child {
+	margin:0;
+}
+
+/*------------END iScroll Indicator-------------*/
+
+
+

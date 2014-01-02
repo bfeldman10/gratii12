@@ -1,0 +1,32 @@
+[
+	{
+		"id": "1", 
+		"title": "Slap Bracelent", 
+		"client": "Gratii",
+		"image":"gratii-bracelet.jpg"
+	},
+	{
+		"id": "2", 
+		"title": "Free T-shirt", 
+		"client": "PLNDR",
+		"image":"plunder.jpg"
+	},
+	{
+		"id": "3", 
+		"title": "$10 Off any order!", 
+		"client": "Route 1 Apparel",
+		"image":"route.jpg"
+	},
+	{
+		"id": "4", 
+		"title": "$5 Gift Card", 
+		"client": "Vaperfy",
+		"image":"vaperfy.jpg"
+	},
+	{
+		"id": "5", 
+		"title": "Free t-shirt", 
+		"client": "Gratii",
+		"image":"gratii-tee.jpg"
+	}
+]

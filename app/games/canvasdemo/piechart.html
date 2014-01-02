@@ -1,0 +1,146 @@
+<html>
+<head>
+	<title>piechart</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500"></canvas>
+<script>
+// var data = [100 , 68 , 20, 30, 100]; 
+
+// var canvas = document.getElementById("canvas");
+// var c = canvas.getContext("2d");
+
+// //draw the canvas and fill it
+// c.fillStyle = "white";
+// c.fillRect(0,0,500,500);
+
+// //a list of colors
+// var colors = ["orange", "green", "blue", "yellow", "teal"];
+
+// var total = 0;
+// for(i=0;i<colors.length;i++){
+// 	total += data[i];
+// }
+
+// //draw pie data
+// var prevAngle = 0;
+// for (i=0; i<data.length; i++){
+	
+// 	//fract that this pieslice represents
+// 	var fraction = data[i]/total;
+
+// 	//calc starting angle
+// 	var angle = prevAngle + fraction*Math.PI*2;
+
+// 	//draw the pie slice
+// 	//c.fillStyle = colors[i];
+
+// 	//fill it with a radial gradient
+// 	var grad = c.createRadialGradient(250,250, 10, 250,250, 100);
+// 	grad.addColorStop(0, "white");
+// 	grad.addColorStop(1, colors[i]);
+// 	c.fillStyle = grad;
+
+// 	//create a path
+// 	c.beginPath();
+// 	c.moveTo(250,250);
+// 	c.arc(250,250,100, prevAngle, angle, false);
+// 	c.lineTo(250,250);
+
+// 	//fill it
+// 	c.fill();
+
+// 	//stroke it
+// 	c.strokeStyle = "black";
+// 	c.stroke();
+
+// 	//update for next time through the loop
+// 	prevAngle = angle;
+// };
+
+// //draw centered text
+// c.fillStyle = "black";
+// c.font = "24pt sans-serif";
+// var text = "Sales Data from 2025";
+// var metrics = c.measureText(text);
+// c.fillText(text, 250-metrics.width/2, 400);
+
+// shim layer with setTimeout fallback 
+window.requestAnimFrame = (function(){ 
+  return  window.requestAnimationFrame       ||  
+          window.webkitRequestAnimationFrame ||  
+          window.mozRequestAnimationFrame    ||  
+          window.oRequestAnimationFrame      ||  
+          window.msRequestAnimationFrame     ||  
+          function( callback ){ 
+            window.setTimeout(callback, 1000 / 60); 
+          }; 
+})(); 
+
+var canvas = document.getElementById('canvas'); 
+var particles = []; 
+var tick = 0; 
+function loop() { 
+    window.requestAnimFrame(loop); 
+    createParticles(); 
+    updateParticles(); 
+    killParticles(); 
+    drawParticles(); 
+} 
+window.requestAnimFrame(loop); 
+
+var colors = ["red", "orange", "white", "blue", "yellow", "green", "purple"];
+
+function createParticles() { 
+    //check on every 10th tick check 
+    if(tick % 10 == 0) { 
+        //add particle if fewer than 100 
+        if(particles.length < 100) {
+        	colorIndex =  Math.round(0+Math.random()*6);
+
+            particles.push({ 
+                    x: Math.random()*canvas.width, //between 0 and canvas width 
+                    y: 0, 
+                    speed: 2+Math.random()*3, //between 2 and 5 
+                    radius: 5+Math.random()*5, //between 5 and 10 
+                    color: colors[colorIndex], 
+            }); 
+        } 
+    } 
+} 
+
+function updateParticles() { 
+    for(var i in particles) { 
+        var part = particles[i]; 
+        part.y += part.speed; 
+    } 
+} 
+
+function killParticles() { 
+    for(var i in particles) { 
+        var part = particles[i]; 
+        if(part.y > canvas.height) { 
+            part.y = 0; 
+        } 
+    } 
+} 
+
+function drawParticles() { 
+    var c = canvas.getContext('2d'); 
+    c.fillStyle = "black"; 
+    c.fillRect(0,0,canvas.width,canvas.height); 
+    for(var i in particles) { 
+        var part = particles[i]; 
+        c.beginPath(); 
+        c.arc(part.x,part.y, part.radius, 0, Math.PI*2); 
+        c.closePath(); 
+        c.fillStyle = part.color; 
+        c.fill(); 
+    } 
+} 
+
+
+
+</script>
+</body>
+</html>
