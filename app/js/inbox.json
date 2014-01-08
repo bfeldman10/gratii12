@@ -1,0 +1,83 @@
+[
+	{
+		"id": "1", 
+		"title": "Slap Bracelent", 
+		"sender": "Gratii",
+		"image":"gratii-bracelet.jpg",
+		"text":"blah blah blha basdf blhac",
+		"type":"default",
+		"opened":0
+	},
+	{
+		"id": "2", 
+		"title": "Free T-shirt", 
+		"sender": "PLNDR",
+		"image":"plunder.jpg",
+		"text":"blah blah blha basdf blhac",
+		"type":"default",
+		"opened":0
+	},
+	{
+		"id": "3", 
+		"title": "$10 Off any order!", 
+		"sender": "Route 1 Apparel",
+		"image":"route.jpg",
+		"text":"blah blah blha basdf blhac",
+		"type":"default",
+		"opened":0
+	},
+	{
+		"id": "4", 
+		"title": "$5 Gift Card", 
+		"sender": "Vaperfy",
+		"image":"vaperfy.jpg",
+		"text":"blah blah blha basdf blhac",
+		"type":"default",
+		"opened":0
+	},
+	{
+		"id": "5", 
+		"title": "Free t-shirt", 
+		"sender": "Gratii",
+		"image":"gratii-tee.jpg",
+		"text":"blah blah blha basdf blhac",
+		"type":"default",
+		"opened":0
+	},
+	{
+		"id": "2", 
+		"title": "Free T-shirt", 
+		"sender": "PLNDR",
+		"image":"plunder.jpg",
+		"text":"blah blah blha basdf blhac",
+		"type":"default",
+		"opened":0
+	},
+	{
+		"id": "3", 
+		"title": "$10 Off any order!", 
+		"sender": "Route 1 Apparel",
+		"image":"route.jpg",
+		"text":"blah blah blha basdf blhac",
+		"type":"default",
+		"opened":0
+	},
+	{
+		"id": "4", 
+		"title": "$5 Gift Card", 
+		"sender": "Vaperfy",
+		"image":"vaperfy.jpg",
+		"text":"blah blah blha basdf blhac",
+		"type":"default",
+		"opened":0
+	},
+	{
+		"id": "5", 
+		"title": "Free t-shirt", 
+		"sender": "Gratii",
+		"image":"gratii-tee.jpg",
+		"text":"blah blah blha basdf blhac",
+		"type":"default",
+		"opened":0
+	}
+]

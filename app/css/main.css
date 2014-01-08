@@ -15,6 +15,18 @@ html, body{
 	position: relative;
 	overflow: hidden;
 	background-color: white;
+	min-height: ;
+	-webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+   /* CSS overrides for mobile here */
+    html, body{
+		min-height: 500px;
+	}
 }
 
 
@@ -82,9 +94,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 
 /*-------START GLOBAL---------*/
-.main{
+.mainApp{
 	position: absolute;
-	background-color: grey;
 	width: 400%;
 	top: 44;
 	bottom: 50;
@@ -100,45 +111,76 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	float: left;
 }
 
-.pageList{
-	position: relative;
-	background-color: red;
+.pageListWrapper{
+/*	position: relative;
 	width: 100%;
-	float: left;
+	float: left;*/
+	position:absolute; z-index:1;
+/*	-webkit-touch-callout:none;*/
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	width:100%;
+	padding:0;
 }
 
-.pageList#arcade{
-	background-color: white;
-}
-
-.pageList#auctions{
-	background-color: white;
-}
-
-.pageList#messages{
-	background-color: blue;
-}
-
-.pageList#profile{
-	background-color: lightpink;
-}
-
-ul.list{
+.pageUL{
 	list-style:none;
 	padding:0px;
 	margin:0;
 	text-align: left;
 }
 
-#arcadeList li{
-	height: 150px;
-	color: white;
-	font-weight: bold;
-	font-size: 30px;
-}
-
 #scroller{
 	width: 200%;
+}
+
+.mainLI{
+	max-height: 400px;
+}
+
+#iScrollVerticalWrapper0{
+	position:absolute; z-index:1;
+	top:0px; bottom:0px; left:0;
+	width:100%;
+	background:white;
+	overflow:auto;
+}
+
+#iScrollVerticalWrapper1{
+	position:absolute; z-index:1;
+	top:40px; bottom:0px; left:0;
+	width:100%;
+	background:white;
+	overflow:auto;
+
+}
+
+#iScrollVerticalWrapper2{
+	position:absolute; z-index:1;
+	top:40px; bottom:0px; left:0;
+	width:100%;
+	background:white;
+	overflow:auto;
+}
+
+#iScrollVerticalWrapper3{
+	position:absolute; z-index:1;
+	top:40px; bottom:0px; left:0;
+	width:100%;
+	background:white;
+	overflow:auto;
+}
+
+textarea:focus, input:focus, select:focus{
+    outline: 0;
+}
+
+input{
+	-webkit-appearance: none;
+	border: none;
+}
+
+a{
+	text-decoration: none;
 }
 /*-------END GLOBAL---------*/
 
@@ -147,15 +189,6 @@ ul.list{
 
 
 /*--------START Arcade--------------*/
-#arcadeList li{
-	position: relative;
-	color: white;
-	font-weight: bold;
-	font-size: 30px;
-	max-height: 400px;
-	opacity: 1;
-}
-
 .arcadeFrame{
 	position: relative;
 	width: 50%;
@@ -175,16 +208,6 @@ ul.list{
 	background-color: black;
 }
 
-/*.arcadeFrame{
-	width: 50%;
-	height:100%;
-	float: left;
-	text-decoration: none;
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-	background-color: #e2e2e2;
-}*/
-
 .challengeable_0{
 	/*position: relative;
 	width:35px;
@@ -197,13 +220,12 @@ ul.list{
 
 .challengeable_1{
 	position: relative;
-	width:100px;
-	height: 85px;
-/*	float: right;*/
-	margin-left: 5px;
+	width:70px;
+	height: 70px;
+	margin-left: 0px;
 	margin-top: 0px;
-	background-image: url('../images/boxingGloves1.png');
-	background-size: 100px 85px;
+	background-image: url('../images/boxingButton.png');
+	background-size: 70px 70px;
 	background-repeat: no-repeat;
 	opacity: 1;
 }
@@ -248,7 +270,7 @@ td{
 
 /*---------START Auctions-----------*/
 	/*--START Auction Nav--*/
-.auctionScopeWrapper{
+.scopeWrapper{
 	position: relative;
 	width: 100%;
 	height: 40px;
@@ -257,7 +279,7 @@ td{
 	opacity: 1;
 }
 
-.auctionScopeButtonWrapper{
+.scopeButtonWrapper{
 	position: relative;
 	width: 90%;
 	height: 25px;
@@ -265,10 +287,9 @@ td{
 	top: 7px;
 }
 
-.auctionScopeButton{
+.scopeButton{
 	position: relative;
 	height: 25px;
-	width: 33%;
 	float: left;
 	line-height: 25px;
 	font-family: 'boostsskregular';
@@ -278,21 +299,36 @@ td{
 	margin: 0;
 }
 
-.auctionScopeButton#live{
+.scopeButton.active{
 	position: relative;
+	height: 25px;
+	float: left;
+	line-height: 25px;
+	font-family: 'boostsskregular';
+	text-align: center;
+	box-sizing: border-box; 
+	margin: 0;
 	background-color: blue;
 	color: white;
+}
+
+#auctions .scopeButton{
+	width: 33%;
+}
+
+.scopeButton#left{
+	position: relative;
 	border-top: 1px solid blue;
 	border-bottom: 1px solid blue;
 	border-left: 1px solid blue;
 	border-top-left-radius: 4px;
 	border-bottom-left-radius: 4px;
 }
-.auctionScopeButton#upnext{
+.scopeButton#center{
 	position: relative;
 	border:1px solid blue;
 }
-.auctionScopeButton#past{
+.scopeButton#right{
 	position: relative;
 	border-top: 1px solid blue;
 	border-bottom: 1px solid blue;
@@ -301,22 +337,13 @@ td{
 	border-bottom-right-radius: 4px;
 }
 
-#wrapper1{
-	position: relative;
-	height: 90%;
-}
 	/*--END Auction Nav--*/
 
 
 	/*--Start Auction--*/
-#auctionList li{
-	position: relative;
-	color: white;
-	font-weight: bold;
-	font-size: 30px;
-	max-height: 400px;
-	opacity: 1;
-}
+/*#auctions .pageListWrapper{
+	margin-top:40px;
+}*/	
 
 .auctionFrame{
 	position: relative;
@@ -368,134 +395,333 @@ td{
 	box-shadow: 0px 3px 3px grey;
 	margin-bottom: 10px;
 }
-
-	/*--END Auction--*/
 /*---------END Auctions-----------*/
 
+
+/*---------START Inbox-----------*/
+#inbox .scopeButton{
+	width: 50%;
+}
+
+#inbox .messages{
+	background-color: white;
+	width: 100%;
+}
+
+
+.messageLI{
+	position: relative;
+	width:100%;
+	margin-bottom:5px; 
+}
+
+.messageImage{
+	position: relative;
+	width: 100%;
+	margin: 0px auto;
+	background-size: 100% 100%;
+	max-width: 800px;
+	max-height: 400px;
+	background-repeat: no-repeat;
+}
+
+.messageImage.new{
+	position: relative;
+	margin: 0 auto;
+	background-image: url('../images/newMessage_GreenWithShadow.png');
+	background-size: 100% 100%;
+	background-color: lightgreen;
+}
+
+
+
+
+
+#inbox .send{
+	background-color: white;
+	width: 100%;
+	display: none;
+}
+
+#inbox .formWrapper{
+	position: relative;
+	width: 100%;
+	height: 300px;
+	margin: 0px auto;
+}
+
+#inbox .formSection{
+	position: relative;
+	width: 90%;
+	margin: 0px auto;
+	padding: 5px;
+	background-color: white;
+	border: 1px solid grey;
+}
+
+#inbox .toWrapper{
+	position: relative;
+	height: 30px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom: 0px;
+}
+
+#inbox .giftWrapper{
+	position: relative;
+	height: 30px;
+}
+
+#inbox .messageWrapper{
+	position: relative;
+	height: 200px;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-top: 0px;
+}
+
+#inbox .formPreText{
+	position: relative;
+	text-align: left;
+	color:blue;
+	font-family: 'boostsskregular';
+	float: left;
+	font-size: 22px;
+	line-height: 30px;
+}
+
+#inbox .formInputText{
+	position: relative;
+	font-family: "Trebuchet MS";
+	font-size: 18px;
+	line-height: 30px;
+	height: 30px;
+	float: left;
+}
+
+#inbox .formInputText#username{
+	width:80%;
+	margin-left: 5px;
+	float: left;
+}
+
+#inbox .formInputText#gift{
+	width:70%;
+	margin-left: 5px;
+	float: left;
+}
+
+#inbox .formInputText#textMessage{
+	width:95%;
+	height: 95%;
+	border: none;
+	margin: 0px auto;
+}
+
+#inbox .sendbutton{
+	height: 30px;
+	border: 1px solid blue;
+	border-radius: 4px;
+	text-align: center;
+	font-family: 'boostsskregular';
+	font-size: 24px;
+	color: blue;
+	margin-top: 5px;
+}
+
+#inbox .sendbutton:active{
+	background-color: lightgreen;
+}
+
+
+
+/*---------END Inbox-----------*/
 
 
 
 /*---------START Profile-----------*/
-	/*--START Profile Nav--*/
-.profileScopeWrapper{
-	position: relative;
-	width: 100%;
-	height: 40px;
-	background-color: #efefef;
-	z-index: 9;
-	opacity: 1;
-}
-
-.profileScopeButtonWrapper{
-	position: relative;
-	width: 90%;
-	height: 25px;
-	margin:0 auto;
-	top: 7px;
-}
-
-.profileScopeButton{
-	position: relative;
-	height: 25px;
+#profile .scopeButton{
 	width: 50%;
-	float: left;
-	line-height: 25px;
+}
+
+/*#profile .pageListWrapper{
+	margin-top:40px;
+}*/
+
+.settings{
+	background-color: ;
+	width: 100%;
+}
+
+#profile .settings .section{
+	position: relative;
+	margin: 0px auto;
+	width: 90%;
+	border: 1px solid #efefef;
+	border-radius: 4px;
+	background-color: none;
+	top: 10px;
+	font-family: "Trebuchet MS";
+	color: blue;
+	font-size: 16px;
+	padding: 5px;
+	margin-top: 10px;
+}
+
+#profile .settings .sectionText{
+	margin-top: 5px;
+}
+
+#profile .settings .sectionHeader{
+	position: relative;
+	height: 25px;
+	width: 100%;
+	background-color: #efefef;
+	box-sizing: border-box; 
 	font-family: 'boostsskregular';
+	font-size: 18px;
+	text-align: center;
+	color: black;
+	line-height: 25px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+#profile .settings .sectionButton{
+	position: relative;
+	height: 35px;
+	box-sizing: border-box; 
+	font-family: 'boostsskregular';
+	font-size: 18px;
 	text-align: center;
 	color: blue;
+	line-height: 35px;
+	border-radius: 4px;
+	border: 1px solid blue;
+	margin-top: 5px;
+}
+
+#profile .settings .sectionButton:active{
+	background-color: lightgreen;
+}
+
+.sectionInputText{
+	position: relative;
+	height: 35px;
+	width: 100%;
 	box-sizing: border-box; 
-	margin: 0;
+	font-family: "Trebuchet MS";
+	font-size: 18px;
+	color: blue;
+	line-height: 35px;
+	border: 1px solid blue;
+	border-radius: 0px
 }
 
-.profileScopeButton#settings{
-	position: relative;
-	background-color: blue;
-	color: white;
-	border-top: 1px solid blue;
-	border-bottom: 1px solid blue;
-	border-left: 1px solid blue;
+.sectionInputText.top {
 	border-top-left-radius: 4px;
-	border-bottom-left-radius: 4px;
-}
-
-.profileScopeButton#transactions{
-	position: relative;
-	border-top: 1px solid blue;
-	border-bottom: 1px solid blue;
-	border-right: 1px solid blue;
 	border-top-right-radius: 4px;
+	margin-top: 5px;
+}
+.sectionInputText.bottom {
+	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
+	border-top: none;
 }
 
-#wrapper3{
+#profile .settings .sectionInputSelect{
 	position: relative;
-	height: 90%;
-}
-	/*--END Profile Nav--*/
-
-
-	/*--Start Profile--*/
-/*#auctionList li{
-	position: relative;
-	color: white;
-	font-weight: bold;
-	font-size: 30px;
-	max-height: 400px;
-	opacity: 1;
-}
-
-.auctionFrame{
-	position: relative;
-	width: 50%;
-	height: 100%;
-	float: left;
-	background-color: black;
-}
-
-.auctionFrame#a .auctionContent{
-	position: relative;
+	height: 35px;
 	width: 100%;
-	height: 100%;
-	max-width: 800px;
-	background-size: 100% 100%;
+	box-sizing: border-box; 
+	font-family: "boostsskregular";
+	font-size: 18px;
+	color: blue;
+	line-height: 35px;
+	border: 1px solid blue;
+	margin-top: 5px;
+}
+
+#profile .settings .avatar{
+	width: 60px;
+	height: 60px;
+	background-size: 60px 60px;
 	background-repeat: no-repeat;
-	margin:0px auto;
-	background-color: black;
+	border: 2px solid blue;
+	border-radius: 8px;
+	float: left;
+	margin-right: 5px;
+	margin-top: 5px;
 }
 
-.auctionFrame#b .auctionContent{
-	position: relative;
-	width: 100%;
-	height: 100%;
-	max-width: 800px;
-	margin:0px auto;
-	background-color: yellow;
+#profile .settings .avatar:active{
+	background-color: lightgreen;
 }
 
-.auctionTitleWrapper{
-	position: relative;
+.transactions{
 	width: 100%;
-	height:30px;
-	background-color: black;
-	color: white;
-	font-size: 20px;
+	display: none;
+
+}
+
+.transactionLI{
+/*	height: 35px;*/
+	padding: 4px;
+	overflow: hidden;
+}
+
+.transactionLI div{
+	line-height: 35px;
+}
+
+.transactionID{
+	position: absolute;
+	font-family: 'Trebuchet MS';
+	font-size: 12px;
+	margin-top:-15px;
+}
+
+.transactionTimestamp{
+	position: absolute;
+	font-family: 'Trebuchet MS';
+	font-size: 12px;
+	margin-top:-15px;
+	right: 5px;
+}
+
+.transactionDescription{
+	float: left;
 	font-family: 'boostsskregular';
-	line-height: 30px;
-	text-align: center;
+	font-size: 14px;
+	margin-top:10px;
+	max-width: 45%;
+	word-wrap: break-word;
 }
 
-.auctionStatsWrapper{
-	position: relative;
-	width: 100%;
-	height:40px;
-	background-color: #efefef;
-	color: white;
-	border-bottom: 1px solid white;
-	box-shadow: 0px 3px 3px grey;
-	margin-bottom: 10px;
+.transactionDelta{
+	float: right;
+	font-family: 'boostsskregular';
+	font-size: 14px;
+	margin-left: 5px;
+	margin-top:10px;
 }
-*/
-	/*--END Profile--*/
+
+.transactionBalance{
+	float: right;
+	font-family: 'boostsskregular';
+	font-size: 22px;
+	margin-top:10px;
+}
+
+.transactionCoin{
+	width: 25px;
+	height: 25px;
+	background-image:url('../images/gratiiCoinIconiOSGradient.png');
+	background-size: 25px 25px;
+	margin-top: 15px;
+	margin-left: 5px;
+	float: right;
+}
 /*---------END Profile-----------*/
 
 
@@ -528,6 +754,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', end
 	height: 100%;
 	margin-right: calc(((100% - 320px) / 4)/2);
 	margin-left: calc(((100% - 320px) / 4)/2);
+	opacity: .5;
+	color: blue;
+}
+
+.navItem.active{
+	opacity: 1;
+	color: red;
 }
 
 .navIcon{
@@ -535,7 +768,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', end
 	height: 30px;
 	margin: 0px auto;
 	margin-top: 3px;
-	opacity: .5;
 }
 
 .navIcon#arcade{
@@ -543,7 +775,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', end
 	background-image: url('../images/Flaticon/joystick2.png');
 	background-size: 35px 30px;
 	background-repeat: no-repeat;
-	opacity: 1;
 }
 
 .navIcon#auctions{
@@ -569,18 +800,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', end
 
 .navText{
 	position: relative;
-	color: blue;
 	font-family: 'boostsskregular', arial;
 	height:12px;
 	font-size: 12px;
 	text-align: center;
 	margin-top: 0px;
-	opacity: .5;
-}
-
-.navText#arcade{
-	color:red;
-	opacity: 1;
 }
 /*------------END Footer--------------*/
 

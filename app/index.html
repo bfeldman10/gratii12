@@ -2,6 +2,7 @@
 <head>
 	<title>Gratii 1210</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, target-densityDpi=device-dpi" /> -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	 <link rel="apple-touch-icon-precomposed" href="images/gratiiCoinIconiOSGradient.png" />
      <link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/gratiiCoinIconiOSGradient.png" />
@@ -27,47 +28,43 @@
 	<!--End Header-->
 
 	<!--Main Content Area-->
-	<div class="main">
-
+	<div class="mainApp">
 		<!-- Page One -->
-		<div class="page" id="wrapper0">
-
-			<!--Scrollable Area-->
-			<div class="pageList" id="arcade">
-				<div id="pullDown0">
-					<span class="pullDownIcon"></span>
-					<span class="pullDownLabel">Pull down to refresh...</span>
+		<div class="page" id="arcade">
+			<div id="iScrollVerticalWrapper0">
+				<!--Scrollable Area-->
+				<div class="pageListWrapper">
+					<!--Refresh Pull Down Area-->
+					
+				
+					<!--UL of games will be inserted here via js-->
+						<!--<li id="snap_0">-->
+							<!--<div id="scroller">-->
+								<!--<div class="frame">Title 0 styling</div>-->	
+								<!--<div class="frame">Top scores styling</div>-->	
+								<!--<div class="frame">Top scores styling</div>-->	
+							<!--</div>-->
+							<!--<ul id="indicator">-->
+								<!--<li class="active"></li>-->
+								<!--<li></li>-->
+								<!--<li></li>-->
+							<!--</ul>-->
+						<!--</li>-->
+						<!--<li id="snap_1">-->
+							<!--<div id="scroller">-->
+								<!--<div class="frame">Title 1 styling</div>-->	
+								<!--<div class="frame">Top scores styling</div>-->	
+								<!--<div class="frame">Top scores styling</div>-->	
+							<!--</div>-->
+							<!--<ul id="indicator">-->
+								<!--<li class="active"></li>-->
+								<!--<li></li>-->
+								<!--<li></li>-->
+							<!--</ul>-->
+						<!--</li>-->
+					<!--UL of games will be end here-->
+					
 				</div>
-				<!--Refresh Pull Down Area-->
-				
-			
-				<!--UL of games will be inserted here via js-->
-					<!--<li id="snap_0">-->
-						<!--<div id="scroller">-->
-							<!--<div class="frame">Title 0 styling</div>-->	
-							<!--<div class="frame">Top scores styling</div>-->	
-							<!--<div class="frame">Top scores styling</div>-->	
-						<!--</div>-->
-						<!--<ul id="indicator">-->
-							<!--<li class="active"></li>-->
-							<!--<li></li>-->
-							<!--<li></li>-->
-						<!--</ul>-->
-					<!--</li>-->
-					<!--<li id="snap_1">-->
-						<!--<div id="scroller">-->
-							<!--<div class="frame">Title 1 styling</div>-->	
-							<!--<div class="frame">Top scores styling</div>-->	
-							<!--<div class="frame">Top scores styling</div>-->	
-						<!--</div>-->
-						<!--<ul id="indicator">-->
-							<!--<li class="active"></li>-->
-							<!--<li></li>-->
-							<!--<li></li>-->
-						<!--</ul>-->
-					<!--</li>-->
-				<!--UL of games will be end here-->
-				
 			</div>
 			<!--End Scrollable Area-->
 
@@ -76,20 +73,16 @@
 		
 		<!--Page Two-->
 		<!-- <div class="page">	 -->	
-		<div class="page">
-			<div class="auctionScopeWrapper">
-				<div class="auctionScopeButtonWrapper">
-					<div class="auctionScopeButton" id="live">LIVE</div>
-					<div class="auctionScopeButton" id="upnext">UP NEXT</div>
-					<div class="auctionScopeButton" id="past">PAST</div>
+		<div class="page" id="auctions">
+			<div class="scopeWrapper">
+				<div class="scopeButtonWrapper">
+					<div class="scopeButton active" id="left">LIVE</div>
+					<div class="scopeButton" id="center">UP NEXT</div>
+					<div class="scopeButton" id="right">PAST</div>
 				</div>
 			</div>
-			<div id="wrapper1">
-				<div class="pageList" id="auctions">
-					<div id="pullDown1">
-						<span class="pullDownIcon"></span>
-						<span class="pullDownLabel">Pull down to refrsesh...</span>
-					</div>	
+			<div id="iScrollVerticalWrapper1">
+				<div class="pageListWrapper">
 				</div>
 			</div>
 		</div>	
@@ -97,42 +90,147 @@
 		<!--End Page Two-->
 
 		<!--Page Three-->
-		<div class="page" id="wrapper2">
-			<div class="pageList" id="messages">
-				<ul class="list">
-					<li>1
-					</li>
-					<li>2
-					</li>
-					<li>3
-					</li>
-					<li>4
-					</li>
-					<li>5
-					</li>
-				</ul>
+		<div class="page" id="inbox">
+			<div class="scopeWrapper">
+				<div class="scopeButtonWrapper">
+					<div class="scopeButton active" id="left">INBOX</div>
+					<div class="scopeButton" id="right">SEND</div>
+				</div>
 			</div>
+			<div id="iScrollVerticalWrapper2">
+				<!--Scrollable Area-->
+				<div class="pageListWrapper">
+					<ul class="messages">
+					</ul>
+					<div class="send"></br>
+					<div class="formWrapper">
+						<div class="formSection toWrapper">
+							<div class="formPreText" id="to">To:
+							</div>
+							<input type="text" class="formInputText top" id="username" placeholder="username" />
+						</div>
+						<div class="formSection giftWrapper">
+							<div class="formPreText" id="gift">gratii:
+							</div>
+							<input type="number" class="formInputText middle" id="gift" value="0" />
+						</div>
+						<div class="formSection messageWrapper">
+							<textarea class="formInputText bottom" id="textMessage" placeholder="text message" onkeyup="textCounter();" onfocus="inputFocus();" onblur="inputBlur();"></textarea>
+						</div>
+						<div class="formSection sendButton" id="sendMessage">Send
+						</div> 
+					</div>
+				</div>
+				</div>
+			</div>
+			<!--End Scrollable Area-->
+
 		</div>
 		<!--End Page Three-->
 
 		<!--Page Four-->
-		<div class="page">
-			<div class="profileScopeWrapper">
-				<div class="profileScopeButtonWrapper">
-					<div class="profileScopeButton" id="settings">SETTINGS</div>
-					<div class="profileScopeButton" id="transactions">TRANSACTIONS</div>
+		<div class="page" id="profile">
+			<div class="scopeWrapper">
+				<div class="scopeButtonWrapper">
+					<div class="scopeButton active" id="left">SETTINGS</div>
+					<div class="scopeButton" id="right">TRANSACTIONS</div>
 				</div>
 			</div>
-			<div id="wrapper3">
-				<div class="pageList" id="auctions">
-					<div id="pullDown3">
-						<span class="pullDownIcon"></span>
-						<span class="pullDownLabel">Pull down to refrsesh...</span>
-					</div>	
+			<div id="iScrollVerticalWrapper3">
+				<div class="pageListWrapper">
+					<div class="settings vSnapToHere">
+						<div class="section">
+							<div class="sectionHeader">My Account Status
+							</div>
+							<div class="sectionText">You suck and have a regular account. </br>Upgrade to <font style="color:lightgreen;font-weight:bold;font-family:boostsskregular;">Gratii PRO</font> for bonus features.
+							</div>
+							<div class="sectionButton" id="upgrade">Let's do it!
+							</div>
+						</div>
+						<div class="section vSnapToHere">
+							<div class="sectionHeader">My Info
+							</div>
+							<input type="text" class="sectionInputText input top" id="email" placeholder="email" />
+							<input type="text" class="sectionInputText input bottom" id="nickname" placeholder="nickname" />
+							<select class="sectionInputSelect input" id="age">
+								<option value="default" selected="selected" disabled="disabled">Pick one</option>
+							  	<option value="preteen">Preteen</option>
+							 	<option value="13-17">13-17</option>
+							 	<option value="18-20">18-20</option>
+							 	<option value="21-25">21-25</option>
+							 	<option value="26-30">26-30</option>
+							 	<option value="31-40">31-40</option>
+							 	<option value="41-50">41-50</option>
+							 	<option value="51-60">51-60</option>
+							 	<option value="60+">60+</option>
+							</select>
+							<select class="sectionInputSelect input" id="gender">
+								<option value="default" selected="selected" disabled="disabled">What are you?</option>
+							  	<option value="male">I am man.</option>
+							 	<option value="female">I am woman.</option>
+							</select>
+						</div>
+						<div class="section vSnapToHere" style="overflow:hidden;">
+							<div class="sectionHeader">My Avatar
+							</div>
+							<div class="avatar" id="1" style="background-image:url(images/avatars/1.png)">
+							</div>
+							<div class="avatar" id="2" style="background-image:url(images/avatars/2.png)">
+							</div>
+							<div class="avatar" id="3" style="background-image:url(images/avatars/3.png)">
+							</div>
+							<div class="avatar" id="4" style="background-image:url(images/avatars/4.png)">
+							</div>
+							<div class="avatar" id="5" style="background-image:url(images/avatars/5.png)">
+							</div>
+							<div class="avatar" id="6" style="background-image:url(images/avatars/6.png)">
+							</div>
+						</div>
+						<div class="section vSnapToHere">
+							<div class="sectionHeader">My Social Accounts
+							</div>
+							<div class="sectionText">Connect your accounts to earn bonus gratii when you Follow and Like different auctions.
+							</div>
+							<div class="sectionButton" id="facebookConnect">Connect my Facebook
+							</div>
+							<div class="sectionButton" id="twitterConnect">Connect my twitter
+							</div>
+						</div>
+						<div class="section vSnapToHere">
+							<div class="sectionHeader">Share Gratii, Earn gratii
+							</div>
+							<div class="sectionText">Every friend that signs up for Gratii and mentions your username earns you more gratii!
+							</div>
+							<div class="sectionButton" id="facebookShare">Share on Facebook
+							</div>
+							<div class="sectionButton" id="twitterShare">Share on twitter
+							</div>
+						</div>
+						<div class="section vSnapToHere">
+							<div class="sectionHeader">Password
+							</div>
+							<div class="sectionText">Want to change your password?
+							</div>
+							<div class="sectionButton" id="passwordReset">Change my password
+							</div>
+						</div>
+						<div class="section vSnapToHere">
+							<div class="sectionHeader">Contact
+							</div>
+							<div class="sectionText">Need to get in touch with someone at Gratii?
+							</div>
+							<a href="mailto:info@gratii.com"><div class="sectionButton" id="emailUs">Email us
+							</div></a>
+						</div>
+						</br></br>
+					</div>
+					<div class="transactions">
+					</div>
 				</div>
 			</div>
 		</div>
 		<!--End Page Four-->
+		</div>
 
 	</div>
 	<!--End Main Content Area-->
@@ -141,7 +239,7 @@
 	<div class="footer">
 
 		<!--Nav Items-->
-		<div class="navItem" id="arcade">
+		<div class="navItem active" id="arcade">
 			<div class="navIcon" id="arcade">
 			</div>
 			<p class="navText" id="arcade">ARCADE</p>
