@@ -4,7 +4,7 @@ var currentPage = 0,
 	currentInboxScope = 0,
 	gameObjects = [],
 	auctionObjects = [],
-	messageObjects = [],
+	inboxObjects = [],
 	transactionObjects = [],
 	pageObjects = [],
 	verticaliScrolls = [],
@@ -44,7 +44,9 @@ $(document).ready(function(){
 
 	getAndDrawArcade();
 	getAndDrawAuctions();
-	getAndDrawInbox();
+	getData("inbox")
+
+	
 	initializeVerticaliScroll(3, false);
 
 });
@@ -448,121 +450,97 @@ var Message = function(val){ //Game object
 	this.type = val.type;
 	this.text = val.text;
 	this.opened = val.opened;
-	this.html = "";
-	messageObjects.push(this);
+
+	this.li = document.createElement('li');
+	this.li.className = "messageLI vSnapToHere";
+	this.li.id = this.id;
+	
+	inboxObjects.push(this);
+
 }
 
-Message.prototype.createMessageHTML = function(){ 
+Message.prototype.openMessage = function(event)
+{ 
+	alert(this.Message.title);
+    this.Message.div.style.backgroundImage = "url('images/boxingButton.png')";
+}
+
+Message.prototype.createDomElements = function(){
 	if(this.opened===0){
-		this.createNewMessageHTML();
+		this.createUnopenedMessage();
 	}
 }
 
-Message.prototype.createNewMessageHTML = function(){ 
-	this.html = 
-	'<li class="messageLI vSnapToHere" id="'+this.id+'">'+
-		'<div class="messageImage new" style="height:'+$(window).width()*.5+';"">'+
-		'</div>'+
-	'</li>';
-
-	newMessages++;
+Message.prototype.createUnopenedMessage = function(){
+	this.div = document.createElement('div');
+	this.div.className = "messageImage new";
+	this.div.style.height = $(window).width()*.5;
+	this.div.addEventListener("click", {
+                                 handleEvent:this.openMessage,                  
+                                 Message:this}, false);
+	
+	this.li.appendChild(this.div);
+	
+	$("#inbox .messages").append(this.li);
 }
 
+// Message.prototype.liClick = function(i) {
 
-Message.prototype.createDefaultMessageHTML = function(){ 
-	this.html = 
-	'<li class="messageLI vSnapToHere" style="width:100%; height: 100px; background-color:white;">'+
-		'<div class="">id:'+this.id+
-		'</div>'+
-		'<div class="">'+this.title+
-		'</div>'+
-		// '<div class="" style="float:left;">'+this.description+': <font style="color:'+this.deltaColor+';">'+this.gratiiChange+''+'</font>'+
-		// '</div>'+
-		// '<div class="">'+
-		// '</div>'+
-		// '<div class="">'+this.balance+
-		// '</div>'+
-	'</li>';
+// 	myID = this.id;
+
+// 	var thisObject = inboxObjects.filter(function( obj ) {
+// 	  	return obj.id == myID;
+// 	});
+
+// 	thisObjectLI = thisObject.li;
+// 	console.log(thisObjectLI);
+//     thisObjectLI.style.border = "7px solid red";
+   
+// }
+
+function createDomElementsFromObjects(dataRequested){
+	console.log("Request to create DOM elements from Objects received: "+dataRequested+"...");
+	if(dataRequested==="inbox"){
+		for(i=0;i<inboxObjects.length;i++){
+			inboxObjects[i].createDomElements();
+		}
+		initializeVerticaliScroll(2, ".vSnapToHere");
+	}	
 }
 
-function drawInboxList(){
-	console.log("Drawing inbox list to the DOM...");
+function createObjects(dataRequested, data){
 
-	console.log("Appending #inbox UL opener...");
-	$("#inbox .messages").append('<ul class="pageUL" style="overflow:visible;">');
-	console.log("Appending HTML for each Message object...");
-	for(i=0;i<messageObjects.length;i++){
-		console.log("Appending HTML for "+messageObjects[i].title+"...");
-		$("#inbox .pageUL").append(messageObjects[i].html);
-		console.log("HTML for "+messageObjects[i].title+" appended#");
-	}
-	console.log("HTML for all Message objects appended#");
-	$("#inbox .messages").append('</ul>');
-	console.log("#inbox UL closed#");
-	initializeVerticaliScroll(2, ".vSnapToHere");
-	console.log("iScroll initialized#");
-	console.log("Inbox list appended to page and ready#");
-}
-
-function createEachMessageHTML(){
-	console.log("Creating the HTML for each Message object...");
-	for(i=0;i<messageObjects.length;i++){
-		console.log("Creating the HTML for "+messageObjects[i].title+"...");
-		
-		messageObjects[i].createMessageHTML();
-		
-		console.log("HTML for "+messageObjects[i].title+" created#");
-	}
-	console.log("HTML for all Message objects created#");
-
-	drawInboxList();
-}
-
-function createMessageObjects(data){
-
-	console.log("Creating Message objects...");
-	$.each(data, function(key, val){
-		console.log("Creating Message object for "+val.title+"...");
-		new Message(val);
-		console.log("Message object for "+val.title+" created#");
-	});
-	console.log("All Message objects created#");
-
-	if(drawInboxRequested===true){
-		createEachMessageHTML();
-	}else{
-		console.log("Not drawing inbox list#");
-		return;
+	console.log("Creating objects: "+dataRequested+"...");
+	if(dataRequested==="inbox"){
+		$.each(data, function(key, val){			
+			new Message(val);
+		});
+		createDomElementsFromObjects(dataRequested)
 	}
 
 }
 
-function getInboxData(){
-	console.log("Getting inbox data...");
+function getData(dataRequested){
+	console.log("Getting data: "+dataRequested+"...");
 
-	$.ajax({
-        url: 'js/inbox.json',
-        type: 'GET',
-        async: true,
-        cache: false,
-        timeout: 30000,
-        error: function(){
-        	console.log("Error getting inbox data#");
-            return true;
-        },
-        success: function(data){ 
-            console.log("Inbox data gotten#")
-            createMessageObjects(data);
-        }
-    });
-}
-
-function getAndDrawInbox(){
-	console.log("Preparing to get and draw inbox...");
-	drawInboxRequested = true;
-	$('#inbox .pageUL').remove();
-	messageObjects = [];
-	getInboxData();
+	if(dataRequested==="inbox"){
+		messageObjects = [];
+		$.ajax({
+	        url: 'js/inbox.json',
+	        type: 'GET',
+	        async: true,
+	        cache: false,
+	        timeout: 30000,
+	        error: function(){
+	        	console.log("Error getting inbox data#");
+	            return true;
+	        },
+	        success: function(data){ 
+	            console.log("Inbox data gotten#")
+	            createObjects(dataRequested, data);
+	        }
+	    });
+	}
 }
 // End of Inbox Object & Drawing Functions-------------------------
 
