@@ -179,7 +179,6 @@ Game.prototype.createDomElements = function(){ //Game draw method
 		this.td = document.createElement('td');
 		this.td.innerHTML = this.topTen[i+5].username+': '+this.topTen[i+5].score;
 		this.row.appendChild(this.td);
-		console.log(i);
 
 	}
 
@@ -523,6 +522,8 @@ function createDomElementsFromObjects(dataRequested){
 		initializeVerticaliScroll(3, false);
 
 	}	
+
+	console.log("DOM elements appended: "+dataRequested+"#");
 }
 
 function createObjects(dataRequested, data){
