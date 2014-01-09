@@ -43,8 +43,9 @@ $(window).resize(function() {
 $(document).ready(function(){
 
 	getAndDrawArcade();
-	getAndDrawAuctions();
-	getData("inbox")
+	//getAndDrawAuctions();
+	getData("auctions");
+	getData("inbox");
 
 	
 	initializeVerticaliScroll(3, false);
@@ -267,173 +268,180 @@ var Auction = function(val){ //Game object
 	this.client = val.client;
 	this.image = "images/auctions/"+val.image;
 	this.html = "";
+	
+	this.li = document.createElement('li');
+	this.li.className = "mainLI vSnapToHere";
+	this.li.id = "auctionSnapWrapper_"+this.id;
+	this.li.style.height = $(window).width()*.5;
+	
 	auctionObjects.push(this);
 }
 
-Auction.prototype.createLiveAuctionHTML = function(){ 
-	this.html = 
-	'<li id="auctionSnapWrapper_'+escape(this.id)+'" class="mainLI vSnapToHere" style="height:'+$(window).width()*.5+';">'+
-		'<div id="scroller">'+
-			'<div class="auctionFrame" id="a">'+
-				'<div class="auctionContent" style="background-image:url('+escape(this.image)+');">'+
-				'</div>'+
-			'</div>'+
-			'<div class="auctionFrame" id="b">'+
-				'<div class="auctionContent">--The Deets Go Here--'+
-				'</div>'+
-			'</div>'+
-		'</div>'+
-		'<ul id="indicator">'+
-			'<li class="active"></li>'+
-			'<li></li>'+
-		'</ul>'+
-	'</li>'+
-	'<div class="auctionTitleWrapper">live: '+this.client+" - "+this.title+
-	'</div>'+
-	'<div class="auctionStatsWrapper">'+
-	'</div>';
-}
+Auction.prototype.createLiveAuction = function(){
+	
+	$("#auctions .auctions").append(this.li);
 
-Auction.prototype.createUpnextAuctionHTML = function(){ 
-	this.html = 
-	'<li id="auctionSnapWrapper_'+escape(this.id)+'" class="mainLI vSnapToHere" style="height:'+$(window).width()*.5+';">'+
-		'<div id="scroller">'+
-			'<div class="auctionFrame" id="a">'+
-				'<div class="auctionContent" style="background-image:url('+escape(this.image)+');">'+
-				'</div>'+
-			'</div>'+
-			'<div class="auctionFrame" id="b">'+
-				'<div class="auctionContent">--The Deets Go Here--'+
-				'</div>'+
-			'</div>'+
-		'</div>'+
-		'<ul id="indicator">'+
-			'<li class="active"></li>'+
-			'<li></li>'+
-		'</ul>'+
-	'</li>'+
-	'<div class="auctionTitleWrapper">upnext: '+this.client+" - "+this.title+
-	'</div>'+
-	'<div class="auctionStatsWrapper">'+
-	'</div>';
-}
+	this.scrollerDiv = document.createElement('div');
+	this.scrollerDiv.id = "scroller";
+	this.li.appendChild(this.scrollerDiv);
 
-Auction.prototype.createPastAuctionHTML = function(){ 
-	this.html = 
-	'<li id="auctionSnapWrapper_'+escape(this.id)+'" class="mainLI vSnapToHere" style="height:'+$(window).width()*.5+';">'+
-		'<div id="scroller">'+
-			'<div class="auctionFrame" id="a">'+
-				'<div class="auctionContent" style="background-image:url('+escape(this.image)+');">'+
-				'</div>'+
-			'</div>'+
-			'<div class="auctionFrame" id="b">'+
-				'<div class="auctionContent">--The Deets Go Here--'+
-				'</div>'+
-			'</div>'+
-		'</div>'+
-		'<ul id="indicator">'+
-			'<li class="active"></li>'+
-			'<li></li>'+
-		'</ul>'+
-	'</li>'+
-	'<div class="auctionTitleWrapper">past: '+this.client+" - "+this.title+
-	'</div>'+
-	'<div class="auctionStatsWrapper">'+
-	'</div>';
-}
+	this.auctionFrameDivA = document.createElement('div');
+	this.auctionFrameDivA.className = "auctionFrame";
+	this.auctionFrameDivA.id = "a";
+	this.scrollerDiv.appendChild(this.auctionFrameDivA);
 
-function drawAuctionList(){
-	console.log("Drawing auction list to the DOM...");
+	this.auctionContent = document.createElement('div');
+	this.auctionContent.className = "auctionContent";
+	this.auctionContent.style.backgroundImage = "url('"+this.image+"')";
+	this.auctionFrameDivA.appendChild(this.auctionContent);
 
-	console.log("Appending #auctions UL opener...");
-	$("#auctions .pageListWrapper").append('<ul class="pageUL" style="overflow:visible;">');
-	console.log("Appending HTML for each Auction object...");
-	for(i=0;i<auctionObjects.length;i++){
-		console.log("Appending HTML for "+auctionObjects[i].title+"...");
-		$("#auctions .pageUL").append(auctionObjects[i].html);
-		initializeHorizontaliScroll('auctionSnapWrapper_'+auctionObjects[i].id);
-		console.log("HTML for "+auctionObjects[i].title+" appended#");
-	}
-	console.log("HTML for all Auction objects appended#");
-	$("#auctions .pageListWrapper").append('</ul>');
-	console.log("#auctions UL closed#");
-	initializeVerticaliScroll(1, ".vSnapToHere");
-	console.log("iScroll initialized#");
-	console.log("Auction list appended to page and ready#");
-}
+	this.auctionFrameDivB = document.createElement('div');
+	this.auctionFrameDivB.className = "auctionFrame";
+	this.auctionFrameDivB.id = "b";
+	this.scrollerDiv.appendChild(this.auctionFrameDivB);
 
-function createEachAuctionHTML(){
-	console.log("Creating the HTML for each Auction object...");
-	for(i=0;i<auctionObjects.length;i++){
-		console.log("Creating the HTML for "+auctionObjects[i].title+"...");
-		if(currentAuctionScope===0){
-			auctionObjects[i].createLiveAuctionHTML();
-		}else if(currentAuctionScope===1){
-			auctionObjects[i].createUpnextAuctionHTML();
-		}else if(currentAuctionScope===2){
-			auctionObjects[i].createPastAuctionHTML();
-		}
-		
-		console.log("HTML for "+auctionObjects[i].title+" created#");
-	}
-	console.log("HTML for all Auction objects created#");
+	this.auctionContent = document.createElement('div');
+	this.auctionContent.className = "auctionContent";
+	this.auctionContent.innerHTML = "--The Deets Go Here--";
+	this.auctionFrameDivB.appendChild(this.auctionContent);
 
-	drawAuctionList();
-}
+	this.indicatorUL = document.createElement('ul');
+	this.indicatorUL.id = "indicator";
+	this.li.appendChild(this.indicatorUL);
 
-function createAuctionObjects(data){
+	this.activeLI = document.createElement('li');
+	this.activeLI.className = "active";
+	this.indicatorUL.appendChild(this.activeLI);
 
-	console.log("Creating Auction objects...");
-	$.each(data, function(key, val){
-		console.log("Creating Auction object for "+val.title+"...");
-		new Auction(val);
-		console.log("Auction object for "+val.title+" created#");
-	});
-	console.log("All Auction objects created#");
+	this.inactiveLI = document.createElement('li');
+	this.indicatorUL.appendChild(this.inactiveLI);
 
-	if(drawAuctionRequested===true){
-		createEachAuctionHTML();
-	}else{
-		console.log("Not drawing auction list#");
-		return;
-	}
+	this.auctionTitleWrapperDiv = document.createElement('div');
+	this.auctionTitleWrapperDiv.className = "auctionTitleWrapper";
+	this.auctionTitleWrapperDiv.innerHTML = "live: "+this.client+" - "+this.title;
+	$("#auctions .auctions").append(this.auctionTitleWrapperDiv);
+
+	this.auctionStatsWrapperDiv = document.createElement('div');
+	this.auctionStatsWrapperDiv.className = "auctionStatsWrapper";
+	$("#auctions .auctions").append(this.auctionStatsWrapperDiv);
+
+	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
 
 }
 
-function getAuctionData(){
-	console.log("Getting auction data...");
+Auction.prototype.createUpnextAuction = function(){
+	
+	$("#auctions .auctions").append(this.li);
 
+	this.scrollerDiv = document.createElement('div');
+	this.scrollerDiv.id = "scroller";
+	this.li.appendChild(this.scrollerDiv);
+
+	this.auctionFrameDivA = document.createElement('div');
+	this.auctionFrameDivA.className = "auctionFrame";
+	this.auctionFrameDivA.id = "a";
+	this.scrollerDiv.appendChild(this.auctionFrameDivA);
+
+	this.auctionContent = document.createElement('div');
+	this.auctionContent.className = "auctionContent";
+	this.auctionContent.style.backgroundImage = "url('"+this.image+"')";
+	this.auctionFrameDivA.appendChild(this.auctionContent);
+
+	this.auctionFrameDivB = document.createElement('div');
+	this.auctionFrameDivB.className = "auctionFrame";
+	this.auctionFrameDivB.id = "b";
+	this.scrollerDiv.appendChild(this.auctionFrameDivB);
+
+	this.auctionContent = document.createElement('div');
+	this.auctionContent.className = "auctionContent";
+	this.auctionContent.innerHTML = "--The Deets Go Here--";
+	this.auctionFrameDivB.appendChild(this.auctionContent);
+
+	this.indicatorUL = document.createElement('ul');
+	this.indicatorUL.id = "indicator";
+	this.li.appendChild(this.indicatorUL);
+
+	this.activeLI = document.createElement('li');
+	this.activeLI.className = "active";
+	this.indicatorUL.appendChild(this.activeLI);
+
+	this.inactiveLI = document.createElement('li');
+	this.indicatorUL.appendChild(this.inactiveLI);
+
+	this.auctionTitleWrapperDiv = document.createElement('div');
+	this.auctionTitleWrapperDiv.className = "auctionTitleWrapper";
+	this.auctionTitleWrapperDiv.innerHTML = "upnext: "+this.client+" - "+this.title;
+	$("#auctions .auctions").append(this.auctionTitleWrapperDiv);
+
+	this.auctionStatsWrapperDiv = document.createElement('div');
+	this.auctionStatsWrapperDiv.className = "auctionStatsWrapper";
+	$("#auctions .auctions").append(this.auctionStatsWrapperDiv);
+
+	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
+
+}
+
+Auction.prototype.createPastAuction = function(){
+	
+	$("#auctions .auctions").append(this.li);
+
+	this.scrollerDiv = document.createElement('div');
+	this.scrollerDiv.id = "scroller";
+	this.li.appendChild(this.scrollerDiv);
+
+	this.auctionFrameDivA = document.createElement('div');
+	this.auctionFrameDivA.className = "auctionFrame";
+	this.auctionFrameDivA.id = "a";
+	this.scrollerDiv.appendChild(this.auctionFrameDivA);
+
+	this.auctionContent = document.createElement('div');
+	this.auctionContent.className = "auctionContent";
+	this.auctionContent.style.backgroundImage = "url('"+this.image+"')";
+	this.auctionFrameDivA.appendChild(this.auctionContent);
+
+	this.auctionFrameDivB = document.createElement('div');
+	this.auctionFrameDivB.className = "auctionFrame";
+	this.auctionFrameDivB.id = "b";
+	this.scrollerDiv.appendChild(this.auctionFrameDivB);
+
+	this.auctionContent = document.createElement('div');
+	this.auctionContent.className = "auctionContent";
+	this.auctionContent.innerHTML = "--The Deets Go Here--";
+	this.auctionFrameDivB.appendChild(this.auctionContent);
+
+	this.indicatorUL = document.createElement('ul');
+	this.indicatorUL.id = "indicator";
+	this.li.appendChild(this.indicatorUL);
+
+	this.activeLI = document.createElement('li');
+	this.activeLI.className = "active";
+	this.indicatorUL.appendChild(this.activeLI);
+
+	this.inactiveLI = document.createElement('li');
+	this.indicatorUL.appendChild(this.inactiveLI);
+
+	this.auctionTitleWrapperDiv = document.createElement('div');
+	this.auctionTitleWrapperDiv.className = "auctionTitleWrapper";
+	this.auctionTitleWrapperDiv.innerHTML = "past: "+this.client+" - "+this.title;
+	$("#auctions .auctions").append(this.auctionTitleWrapperDiv);
+
+	this.auctionStatsWrapperDiv = document.createElement('div');
+	this.auctionStatsWrapperDiv.className = "auctionStatsWrapper";
+	$("#auctions .auctions").append(this.auctionStatsWrapperDiv);
+
+	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
+
+}
+
+
+Auction.prototype.createDomElements = function(){
 	if(currentAuctionScope===0){
-		var URL = "js/liveAuctions.json";
+		this.createLiveAuction();
 	}else if(currentAuctionScope===1){
-		var URL = "js/upnextAuctions.json";
+		this.createUpnextAuction();
 	}else if(currentAuctionScope===2){
-		var URL = "js/pastAuctions.json";
+		this.createPastAuction();
 	}
-
-	$.ajax({
-        url: URL,
-        type: 'GET',
-        async: true,
-        cache: false,
-        timeout: 30000,
-        error: function(){
-        	console.log("Error getting auction data#");
-            return true;
-        },
-        success: function(data){ 
-            console.log("Auction data gotten#")
-            createAuctionObjects(data);
-        }
-    });
-}
-
-function getAndDrawAuctions(){
-	console.log("Preparing to get and draw auctions...");
-	drawAuctionRequested = true;
-	$('#auctions .pageUL').remove();
-	auctionObjects = [];
-	getAuctionData();
 }
 // End of Auction Object & Drawing Functions-------------------------
 
@@ -441,7 +449,7 @@ function getAndDrawAuctions(){
 
 
 
-// Inbox Object & Drawing Functions-------------------------
+// start of INBOX-------------------------
 var Message = function(val){ //Game object
 	this.id = val.id;
 	this.title = val.title;
@@ -465,13 +473,10 @@ Message.prototype.openMessage = function(event)
     this.Message.div.style.backgroundImage = "url('images/boxingButton.png')";
 }
 
-Message.prototype.createDomElements = function(){
-	if(this.opened===0){
-		this.createUnopenedMessage();
-	}
-}
-
 Message.prototype.createUnopenedMessage = function(){
+	
+	$("#inbox .messages").append(this.li);
+
 	this.div = document.createElement('div');
 	this.div.className = "messageImage new";
 	this.div.style.height = $(window).width()*.5;
@@ -480,42 +485,56 @@ Message.prototype.createUnopenedMessage = function(){
                                  Message:this}, false);
 	
 	this.li.appendChild(this.div);
-	
-	$("#inbox .messages").append(this.li);
+
 }
 
-// Message.prototype.liClick = function(i) {
+Message.prototype.createDomElements = function(){
+	if(this.opened===0){
+		this.createUnopenedMessage();
+	}
+}
+// end of INBOX-------------------------
 
-// 	myID = this.id;
 
-// 	var thisObject = inboxObjects.filter(function( obj ) {
-// 	  	return obj.id == myID;
-// 	});
 
-// 	thisObjectLI = thisObject.li;
-// 	console.log(thisObjectLI);
-//     thisObjectLI.style.border = "7px solid red";
-   
-// }
-
+// start of UNIVERSAL DATA-------------------------
 function createDomElementsFromObjects(dataRequested){
 	console.log("Request to create DOM elements from Objects received: "+dataRequested+"...");
-	if(dataRequested==="inbox"){
+	
+	if(dataRequested==="auctions"){
+		
+		for(i=0;i<auctionObjects.length;i++){
+			auctionObjects[i].createDomElements();
+		}
+		initializeVerticaliScroll(1, ".vSnapToHere");
+
+	}else if(dataRequested==="inbox"){
+		
 		for(i=0;i<inboxObjects.length;i++){
 			inboxObjects[i].createDomElements();
 		}
 		initializeVerticaliScroll(2, ".vSnapToHere");
+
 	}	
 }
 
 function createObjects(dataRequested, data){
 
 	console.log("Creating objects: "+dataRequested+"...");
-	if(dataRequested==="inbox"){
+	if(dataRequested==="auctions"){
+		
+		$.each(data, function(key, val){			
+			new Auction(val);
+		});
+		createDomElementsFromObjects(dataRequested)
+	
+	}else if(dataRequested==="inbox"){
+	
 		$.each(data, function(key, val){			
 			new Message(val);
 		});
 		createDomElementsFromObjects(dataRequested)
+	
 	}
 
 }
@@ -523,7 +542,35 @@ function createObjects(dataRequested, data){
 function getData(dataRequested){
 	console.log("Getting data: "+dataRequested+"...");
 
-	if(dataRequested==="inbox"){
+	if(dataRequested==="auctions"){
+
+		if(currentAuctionScope===0){
+			URL = 'js/liveAuctions.json';
+		}else if(currentAuctionScope===1){
+			URL = 'js/upnextAuctions.json';
+		}else if(currentAuctionScope===1){
+			URL = 'js/pastAuctions.json';
+		}
+
+		messageObjects = [];
+		$.ajax({
+	        url: URL,
+	        type: 'GET',
+	        async: true,
+	        cache: false,
+	        timeout: 30000,
+	        error: function(){
+	        	console.log("Error getting data: "+dataRequested+"#");
+	            return true;
+	        },
+	        success: function(data){ 
+	            console.log("Data gotten: "+dataRequested+"#");
+	            createObjects(dataRequested, data);
+	        }
+	    });
+
+	}else if(dataRequested==="inbox"){
+		
 		messageObjects = [];
 		$.ajax({
 	        url: 'js/inbox.json',
@@ -532,17 +579,18 @@ function getData(dataRequested){
 	        cache: false,
 	        timeout: 30000,
 	        error: function(){
-	        	console.log("Error getting inbox data#");
+	        	console.log("Error getting data: "+dataRequested+"#");
 	            return true;
 	        },
 	        success: function(data){ 
-	            console.log("Inbox data gotten#")
+	            console.log("Data gotten: "+dataRequested+"#");
 	            createObjects(dataRequested, data);
 	        }
 	    });
-	}
+
+	} 
 }
-// End of Inbox Object & Drawing Functions-------------------------
+// end of UNIVERSAL DATA-------------------------
 
 
 
@@ -746,7 +794,9 @@ function changeAuctionScope(selectedAuctionScope){
 	highlightSelectedAuctionScope(selectedAuctionScope);
 	
 	displayAuctionScope(selectedAuctionScope);
-	getAndDrawAuctions();
+	auctionObjects = [];
+	$("#auctions .auctions").html('');
+	getData("auctions");
 }
 
 $("#auctions .scopeButton").on(clickEvent, function(){ //Mobile touch on navItem
