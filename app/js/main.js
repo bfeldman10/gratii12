@@ -42,38 +42,15 @@ $(window).resize(function() {
 
 $(document).ready(function(){
 
-	getAndDrawArcade();
-	//getAndDrawAuctions();
+	getData("arcade");
 	getData("auctions");
 	getData("inbox");
-
 	
 	initializeVerticaliScroll(3, false);
 
 });
 
 // iScroll Functions-------------------------------
-function pullDownArcade () {
-	getAndDrawArcade();
-}
-
-function pullDownAuctions () {
-	getAndDrawAuctions();
-}
-
-function pullDownInbox () {
-	console.log("pullDownInbox...");
-}
-
-function pullDownProfile () {
-	console.log("pullDownProfile...");
-}
-
-function pullDown(){
-	console.log(currentPage);
-	getAndDrawArcade();
-	verticaliScrolls[currentPage].refresh();
-}
 
 function initializeVerticaliScroll(pageIndex, snapTo){
 
@@ -116,152 +93,114 @@ function initializeHorizontaliScroll(wrapperID){
 // End iScroll Functions-------------------------------
 
 
-
-
-
-
-
-
-// Arcade Object & Drawing Functions-------------------------
+// start of Arcade-------------------------
 var Game = function(val){ //Game object
 	this.id = val.id;
 	this.title = val.title;
 	this.image = "images/arcade/"+val.image;
 	this.challengeable = val.challengeable;
+	this.challengeButtonBackground = val.challengeable?"url('../app/images/boxingGloves1.png')":"none";
 	this.myHighScore = val.myHighScore;
 	this.myTotalGratii = val.myTotalGratii;
 	this.topTen = val.topTen;
-	this.topTenHTML = this.createTopTenTable(this.topTen);
-	this.html = "";
+	// this.topTenHTML = this.createTopTenTable(this.topTen);
+	
+	this.li = document.createElement('li');
+	this.li.className = "mainLI vSnapToHere";
+	this.li.id = "gameSnapWrapper_"+this.id;
+	this.li.style.height = $(window).width()*.5;
+
+
 	gameObjects.push(this);
 }
 
-Game.prototype.createTopTenTable = function(topTen){
-	topTenHTML = '<table class="top10">';
-	for(i=0; i<5;i++){
-		topTenHTML += '<tr>'+
-						'<td>'+escape(this.topTen[i].username)+': '+escape(this.topTen[i].score)+'</td>'+
-						'<td>'+escape(this.topTen[i+5].username)+': '+escape(this.topTen[i+5].score)+'</td>'+
-					'</tr>';
+Game.prototype.createDomElements = function(){ //Game draw method
+	
+	$("#arcade .games").append(this.li);
+
+	this.scrollerDiv = document.createElement('div');
+	this.scrollerDiv.id = "scroller";
+	this.li.appendChild(this.scrollerDiv);
+
+	this.arcadeFrameA = document.createElement('div');
+	this.arcadeFrameA.className = "arcadeFrame";
+	this.arcadeFrameA.id = "a";
+	this.scrollerDiv.appendChild(this.arcadeFrameA);
+
+	this.arcadeContent = document.createElement('div');
+	this.arcadeContent.className = "arcadeContent";
+	this.arcadeContent.style.backgroundImage = "url('"+this.image+"')";
+	this.arcadeFrameA.appendChild(this.arcadeContent);
+
+	if(this.challengeable==1){
+		this.challengeButton = document.createElement('div');
+		this.challengeButton.className = "challengeButton";
+		this.challengeButton.style.backgroundImage = "url('"+this.challengeButtonBackground+"')";
+		this.challengeButton.style.opacity = this.Userpro?1:.5;
+		this.arcadeContent.appendChild(this.challengeButton);
 	}
 	
-	topTenHTML += '</table>';
-	return topTenHTML;
-}
+	this.arcadeFrameB = document.createElement('div');
+	this.arcadeFrameB.className = "arcadeFrame";
+	this.arcadeFrameB.id = "b";
+	this.scrollerDiv.appendChild(this.arcadeFrameB);
 
-Game.prototype.createGameHTML = function(){ //Game draw method
-	glovesBackground = this.challengeable?"url('../app/images/boxingGloves1.png')":"none";
-	this.html = 
-	'<li id="gameSnapWrapper_'+escape(this.id)+'" class="mainLI vSnapToHere" style="height:'+$(window).width()*.5+';">'+
-		'<div id="scroller">'+
-			'<div class="arcadeFrame" id="a">'+
-				'<div class="arcadeContent" style="background-image:url('+escape(this.image)+');">'+
-					'<div class="challengeable_'+escape(this.challengeable)+'" style="opacity:'+escape((Userpro?1:.5))+';">'+
-					'</div>'+
-				'</div>'+
-			'</div>'+
-			'<div class="arcadeFrame" id="b">'+
-				'<div class="arcadeContent">'+
-					'<div class="myScores">'+
-						'<div class="myHighScore">My best: '+escape(this.myHighScore)+'</div>'+
-						'<div class="myTotalGratii">Gratii accumulated: '+escape(this.myTotalGratii)+'</div>'+
-					'</div>'+
-					this.topTenHTML+
-				'</div>'+
-			'</div>'+
-		'</div>'+
-		'<ul id="indicator">'+
-			'<li class="active"></li>'+
-			'<li></li>'+
-		'</ul>'+
-	'</li>';
-}
+	this.arcadeContent = document.createElement('div');
+	this.arcadeContent.className = "arcadeContent";
+	this.arcadeFrameB.appendChild(this.arcadeContent);
 
-function drawArcadeList(){
-	console.log("Drawing arcade list to the DOM...");
+	this.myScores = document.createElement('div');
+	this.myScores.className = "myScores";
+	this.arcadeContent.appendChild(this.myScores);
 
-	console.log("Appending #arcade UL opener...");
-	$("#arcade .pageListWrapper").append('<ul class="pageUL" style="overflow:visible;">');
+	this.myHighScoreDiv = document.createElement('div');
+	this.myHighScoreDiv.className = "myHighScore";
+	this.myHighScoreDiv.innerHTML = "My best: "+this.myHighScore;
+	this.myScores.appendChild(this.myHighScoreDiv);
 
-	console.log("Appending HTML for each Game object...");
-	for(i=0;i<gameObjects.length;i++){
-		console.log("Appending HTML for "+gameObjects[i].title+"...");
-		$("#arcade .pageUL").append(gameObjects[i].html);
-		initializeHorizontaliScroll('gameSnapWrapper_'+gameObjects[i].id);
-		console.log("HTML for "+gameObjects[i].title+" appended#");
-	}
-	console.log("HTML for all Game objects appended#");
+	this.myTotalGratiiDiv = document.createElement('div');
+	this.myTotalGratiiDiv.className = "myTotalGratii";
+	this.myTotalGratiiDiv.innerHTML = "Gratii accumulated: "+this.myTotalGratii;
+	this.myScores.appendChild(this.myTotalGratiiDiv);
 
-	$("#arcade .pageListWrapper").append('</ul>');
-	console.log("#arcade UL closed#");
-	initializeVerticaliScroll(0, ".vSnapToHere");
-	console.log("iScroll initialized#");
-	console.log("Arcade list appended to page and ready#");
-}
+	this.top10Table = document.createElement('table');
+	this.top10Table.className = "top10";
+	this.arcadeContent.appendChild(this.top10Table);
 
-function createEachGameHTML(){
-	console.log("Creating the HTML for each Game object...");
-	for(i=0;i<gameObjects.length;i++){
-		console.log("Creating the HTML for "+gameObjects[i].title+"...");
-		gameObjects[i].createGameHTML();
-		console.log("HTML for "+gameObjects[i].title+" created#");
-	}
-	console.log("HTML for all Game objects created#");
+	for(var i=0;i<5;i++){
+		
+		this.row = document.createElement('tr');
+		this.top10Table.appendChild(this.row);
 
-	drawArcadeList();
-}
+		this.td = document.createElement('td');
+		this.td.innerHTML = this.topTen[i].username+': '+this.topTen[i].score;
+		this.row.appendChild(this.td);
 
-function createGameObjects(data){
+		this.td = document.createElement('td');
+		this.td.innerHTML = this.topTen[i+5].username+': '+this.topTen[i+5].score;
+		this.row.appendChild(this.td);
+		console.log(i);
 
-	console.log("Creating Game objects...");
-	$.each(data, function(key, val){
-		console.log("Creating Game object for "+val.title+"...");
-		new Game(val);
-		console.log("Game object for "+val.title+" created#");
-	});
-	console.log("All Game objects created#");
-
-	if(drawArcadeRequested===true){
-		createEachGameHTML();
-	}else{
-		console.log("Not drawing arcade list#");
-		return;
 	}
 
+	this.indicatorUL = document.createElement('ul');
+	this.indicatorUL.id = "indicator";
+	this.li.appendChild(this.indicatorUL);
+
+	this.activeLI = document.createElement('li');
+	this.activeLI.className = "active";
+	this.indicatorUL.appendChild(this.activeLI);
+
+	this.inactiveLI = document.createElement('li');
+	this.indicatorUL.appendChild(this.inactiveLI);
+
+	initializeHorizontaliScroll('gameSnapWrapper_'+this.id);
 }
-
-function getArcadeData(){
-	console.log("Getting arcade data...");
-
-	$.ajax({
-        url: "js/arcade.json",
-        type: 'GET',
-        async: true,
-        cache: false,
-        timeout: 30000,
-        error: function(){
-        	console.log("Error getting arcade data#");
-            return true;
-        },
-        success: function(data){ 
-            console.log("Arcade data gotten#")
-            createGameObjects(data);
-        }
-    });
-}
-
-function getAndDrawArcade(){
-	console.log("Preparing to get and draw arcade...");
-	drawArcadeRequested = true;
-	$('#arcade .pageUL').remove();
-	gameObjects = [];
-	getArcadeData();
-}
-// End of Arcade Object & Drawing Functions-------------------------
+// end of Arcade-------------------------
 
 
 
-// Auction Object & Drawing Functions-------------------------
+// start of Auctions-------------------------
 var Auction = function(val){ //Game object
 	this.id = val.id;
 	this.title = val.title;
@@ -443,7 +382,7 @@ Auction.prototype.createDomElements = function(){
 		this.createPastAuction();
 	}
 }
-// End of Auction Object & Drawing Functions-------------------------
+// end of Auctions-------------------------
 
 
 
@@ -497,23 +436,91 @@ Message.prototype.createDomElements = function(){
 
 
 
+// start of TRANSACTIONS-------------------------
+var Transaction = function(val){ //Game object
+	this.id = val.id;
+	this.timestamp = val.timestamp;
+	this.description = val.description;
+	this.gratiiChange = val.gratiiChange;
+	this.deltaColor = this.gratiiChange>=0?"green":"red";
+	this.balance = val.balance;
+	this.gratiiCoin = "images/gratiiCoinIconiOSGradient.png";
+	this.html = "";
+	this.backgroundColor = transactionObjects.length%2?"#fcfcfc":"#f4fbff";
+
+	this.li = document.createElement('li');
+	this.li.className = "transactionLI";
+	this.li.style.backgroundColor = this.backgroundColor;
+
+	transactionObjects.push(this);
+}
+
+Transaction.prototype.createDomElements = function(){ 
+	
+	$("#profile .transactions").append(this.li);
+
+	this.div = document.createElement('div');
+	this.div.className = "transactionID";
+	this.div.innerHTML = "id: "+this.id;
+	this.li.appendChild(this.div);	
+
+	this.div = document.createElement('div');
+	this.div.className = "transactionTimestamp";
+	this.div.innerHTML = this.timestamp;
+	this.li.appendChild(this.div);	
+
+	this.div = document.createElement('div');
+	this.div.className = "transactionDescription";
+	this.div.innerHTML = this.description+': <font style="color:'+this.deltaColor+';">'+this.gratiiChange+''+'</font>';
+	this.li.appendChild(this.div);	
+
+	this.div = document.createElement('div');
+	this.div.className = "transactionCoin";
+	this.li.appendChild(this.div);
+
+	this.div = document.createElement('div');
+	this.div.className = "transactionBalance";
+	this.div.innerHTML = this.balance;
+	this.li.appendChild(this.div);	
+
+}
+
+// end of TRANSACTIONS-------------------------
+
+
+
+
 // start of UNIVERSAL DATA-------------------------
 function createDomElementsFromObjects(dataRequested){
 	console.log("Request to create DOM elements from Objects received: "+dataRequested+"...");
 	
-	if(dataRequested==="auctions"){
+	if(dataRequested==="arcade"){
 		
-		for(i=0;i<auctionObjects.length;i++){
+		for(var i=0;i<gameObjects.length;i++){
+			gameObjects[i].createDomElements();
+		}
+		initializeVerticaliScroll(0, ".vSnapToHere");
+
+	}else if(dataRequested==="auctions"){
+		
+		for(var i=0;i<auctionObjects.length;i++){
 			auctionObjects[i].createDomElements();
 		}
 		initializeVerticaliScroll(1, ".vSnapToHere");
 
 	}else if(dataRequested==="inbox"){
 		
-		for(i=0;i<inboxObjects.length;i++){
+		for(var i=0;i<inboxObjects.length;i++){
 			inboxObjects[i].createDomElements();
 		}
 		initializeVerticaliScroll(2, ".vSnapToHere");
+
+	}else if(dataRequested==="transactions"){
+		
+		for(var i=0;i<transactionObjects.length;i++){ 
+			transactionObjects[i].createDomElements();
+		}
+		initializeVerticaliScroll(3, false);
 
 	}	
 }
@@ -521,7 +528,14 @@ function createDomElementsFromObjects(dataRequested){
 function createObjects(dataRequested, data){
 
 	console.log("Creating objects: "+dataRequested+"...");
-	if(dataRequested==="auctions"){
+	if(dataRequested==="arcade"){
+	
+		$.each(data, function(key, val){			
+			new Game(val);
+		});
+		createDomElementsFromObjects(dataRequested)
+	
+	}else if(dataRequested==="auctions"){
 		
 		$.each(data, function(key, val){			
 			new Auction(val);
@@ -535,6 +549,13 @@ function createObjects(dataRequested, data){
 		});
 		createDomElementsFromObjects(dataRequested)
 	
+	}else if(dataRequested==="transactions"){
+	
+		$.each(data, function(key, val){			
+			new Transaction(val);
+		});
+		createDomElementsFromObjects(dataRequested)
+	
 	}
 
 }
@@ -542,7 +563,26 @@ function createObjects(dataRequested, data){
 function getData(dataRequested){
 	console.log("Getting data: "+dataRequested+"...");
 
-	if(dataRequested==="auctions"){
+	if(dataRequested==="arcade"){
+
+		gameObjects = []; 
+		$.ajax({
+	        url: 'js/arcade.json',
+	        type: 'GET',
+	        async: true,
+	        cache: false,
+	        timeout: 30000,
+	        error: function(){
+	        	console.log("Error getting data: "+dataRequested+"#");
+	            return true;
+	        },
+	        success: function(data){ 
+	            console.log("Data gotten: "+dataRequested+"#");
+	            createObjects(dataRequested, data);
+	        }
+	    });
+
+	}else if(dataRequested==="auctions"){
 
 		if(currentAuctionScope===0){
 			URL = 'js/liveAuctions.json';
@@ -588,129 +628,28 @@ function getData(dataRequested){
 	        }
 	    });
 
-	} 
+	}else if(dataRequested==="transactions"){
+		
+		messageObjects = [];
+		$.ajax({
+	        url: 'js/transactions.json',
+	        type: 'GET',
+	        async: true,
+	        cache: false,
+	        timeout: 30000,
+	        error: function(){
+	        	console.log("Error getting data: "+dataRequested+"#");
+	            return true;
+	        },
+	        success: function(data){ 
+	            console.log("Data gotten: "+dataRequested+"#");
+	            createObjects(dataRequested, data);
+	        }
+	    });
+
+	}  
 }
 // end of UNIVERSAL DATA-------------------------
-
-
-
-
-
-
-
-// Transaction Object & Drawing Functions---------------------
-var Transaction = function(val){ //Game object
-	this.id = val.id;
-	this.timestamp = val.timestamp;
-	this.description = val.description;
-	this.gratiiChange = val.gratiiChange;
-	this.deltaColor = this.gratiiChange>=0?"green":"red";
-	this.balance = val.balance;
-	this.gratiiCoin = "images/gratiiCoinIconiOSGradient.png";
-	this.html = "";
-	this.backgroundColor = transactionObjects.length%2?"#fcfcfc":"#f4fbff";
-	transactionObjects.push(this);
-}
-
-Transaction.prototype.createTransactionHTML = function(){ 
-	this.html = 
-	'<li class="transactionLI" style="background-color:'+this.backgroundColor+';">'+
-		'<div class="transactionID">id:'+this.id+
-		'</div>'+
-		'<div class="transactionTimestamp">'+this.timestamp+
-		'</div>'+
-		'<div class="transactionDescription" style="float:left;">'+this.description+': <font style="color:'+this.deltaColor+';">'+this.gratiiChange+''+'</font>'+
-		'</div>'+
-		'<div class="transactionCoin">'+
-		'</div>'+
-		'<div class="transactionBalance">'+this.balance+
-		'</div>'+
-	'</li>';
-}
-
-function drawTransactionList(){
-	console.log("Drawing transaction list to the DOM...");
-
-	console.log("Appending #transactions UL opener...");
-	$("#profile .transactions").append('<ul class="pageUL" style="overflow:visible;">');
-	console.log("Appending HTML for each Transaction object...");
-	for(i=0;i<transactionObjects.length;i++){
-		console.log("Appending HTML for "+transactionObjects[i].id+"...");
-		$("#profile .pageUL").append(transactionObjects[i].html);
-		console.log("HTML for "+transactionObjects[i].id+" appended#");
-	}
-	console.log("HTML for all Transaction objects appended#");
-	$("#profile .transactions").append('</ul>');
-	console.log("#profile UL closed#");
-	initializeVerticaliScroll(3, false);
-	console.log("iScroll initialized#");
-	console.log("Transaction list appended to page and ready#");
-}
-
-function createEachTransactionHTML(){
-	console.log("Creating the HTML for each Transaction object...");
-	for(i=0;i<transactionObjects.length;i++){
-		console.log("Creating the HTML for "+transactionObjects[i].id+"...");
-		
-		transactionObjects[i].createTransactionHTML();
-		
-		console.log("HTML for "+transactionObjects[i].id+" created#");
-	}
-	console.log("HTML for all Transaction objects created#");
-
-	drawTransactionList();
-}
-
-function createTransactionObjects(data){
-
-	console.log("Creating Transaction objects...");
-	$.each(data, function(key, val){
-		console.log("Creating Transaction object for "+val.id+"...");
-		new Transaction(val);
-		console.log("Transaction object for "+val.id+" created#");
-	});
-	console.log("All Transaction objects created#");
-
-	if(drawTransactionsRequested===true){
-		createEachTransactionHTML();
-	}else{
-		console.log("Not drawing transaction list#");
-		return;
-	}
-
-}
-
-function getTransactionData(){
-	console.log("Getting transaction data...");
-
-	$.ajax({
-        url: 'js/transactions.json',
-        type: 'GET',
-        async: true,
-        cache: false,
-        timeout: 30000,
-        error: function(){
-        	console.log("Error getting transaction data#");
-            return true;
-        },
-        success: function(data){ 
-            console.log("Transaction data gotten#")
-            createTransactionObjects(data);
-        }
-    });
-}
-
-function getAndDrawTransactions(){
-	console.log("Preparing to get and draw transactions...");
-	drawTransactionsRequested = true;
-	$('#profile .pageUL').remove();
-	transactionObjects = [];
-	getTransactionData();
-}
-// End of Transaction Object & Drawing Functions---------------------
-
-
-
 
 
 
@@ -897,7 +836,9 @@ function getProfileScope(selectedProfileScope){ //Scroll to the new page
 		verticaliScrolls[3].refresh();
 	}else{
 		$(".settings").toggle();
-		getAndDrawTransactions();
+		transactionObjects = [];
+		$(".transactions").html('');
+		getData("transactions");
 		$(".transactions").toggle();
 	}
 	console.log("On profile scope "+selectedProfileScope+"#");
@@ -907,7 +848,6 @@ function changeProfileScope(selectedProfileScope){
 	dimAllProfileScopes();
 	highlightSelectedProfileScope(selectedProfileScope);
 	getProfileScope(selectedProfileScope);
-	//getAndDrawProfile();
 }
 
 $("#profile .scopeButton").on(clickEvent, function(){ //Mobile touch on navItem
