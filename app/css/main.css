@@ -25,7 +25,7 @@ html, body{
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
    /* CSS overrides for mobile here */
     html, body{
-		min-height: 500px;
+		min-height: 460px;
 	}
 }
 
@@ -91,7 +91,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 
 .homeScreen .button.login{
 	font-size: 28px;
-	margin-bottom: 100px;
+	margin-bottom: 10px;
 	width: 80%;
 	/*border: 2px solid blue;*/
 }
@@ -491,8 +491,9 @@ td{
 .leader{
 	position: relative;
 	color: black;
-	font-family: 'boostsskregular';
-	font-size: 20px;
+	font-family: 'Trebuchet MS';
+	font-size: 18px;
+	font-weight: bold;
 	border: 1px sold red;
 }
 

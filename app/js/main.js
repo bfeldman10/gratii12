@@ -302,7 +302,7 @@ Auction.prototype.createLiveAuction = function(){
 	this.leaderDiv = document.createElement('div');
 	this.leaderDiv.className = "leader";
 	if(this.bids > 0){
-		this.leaderDiv.style.color = "blue";
+		this.leaderDiv.style.color = "black";
 		this.leaderDiv.innerHTML = this.leader;
 	}else{
 		this.leaderDiv.style.color = "grey";
