@@ -30,6 +30,76 @@ html, body{
 }
 
 
+
+/*-------start HOME SCREEN------------*/
+.homeScreen{
+	position: fixed;
+	width: 100%;
+	height:100%;
+	z-index: 10;
+	background: rgb(254,255,255); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(254,255,255,1) 0%, rgba(210,235,249,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(254,255,255,1)), color-stop(100%,rgba(210,235,249,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(254,255,255,1) 0%,rgba(210,235,249,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(254,255,255,1) 0%,rgba(210,235,249,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(254,255,255,1) 0%,rgba(210,235,249,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(254,255,255,1) 0%,rgba(210,235,249,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#d2ebf9',GradientType=0 ); /* IE6-9 */
+
+}
+
+.homeScreenLogo{
+	position: relative;
+	margin: 0px auto;
+	margin-top: 20px;
+	margin-bottom: 50px;
+	width: 100%;
+	background-image: url('../images/gratiiColorShadowHomeLogo.png');
+	/*background-image: url('../images/gratiiWhiteShadow.png');*/
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	max-width: 800px;
+	max-height: 400px;
+	z-index: 10;
+}
+
+.homeScreenButtonWrapper{
+	position: absolute;
+	width: 100%;
+	margin: 0px auto;
+	/*bottom:30px;*/
+}
+
+.homeScreen .button{
+	position: relative;
+	width: 60%;
+	height: 40px;
+	line-height: 40px;
+	margin: 0px auto;
+	margin-bottom: 10px;
+	border: 0px solid blue;
+	font-family: 'boostsskregular';
+	color: blue;
+	font-size: 20px;
+	text-align: center;
+	border-radius: 4px;
+}
+
+.homeScreen .button:active{
+	background-color: lightgreen;
+}
+
+.homeScreen .button.login{
+	font-size: 28px;
+	margin-bottom: 100px;
+	width: 80%;
+	/*border: 2px solid blue;*/
+}
+/*-------end HOME SCREEN------------*/
+
+
+
+
 /*-------START Header------------*/
 .header{
 	position: absolute;
@@ -394,6 +464,67 @@ td{
 	border-bottom: 1px solid white;
 	box-shadow: 0px 3px 3px grey;
 	margin-bottom: 10px;
+}
+
+.auctionStatsContent{
+	position: relative;
+	margin: 0px auto;
+	max-width: 800px;
+}
+
+.leaderInfoWrapper{
+	position: relative;
+	height: calc(100% - 3px);
+	float:left;
+	padding: 3px;
+}
+
+.bidCount{
+	position: relative;
+	color: black;
+	font-family: 'Trebuchet MS';
+	font-size: 12px;
+	margin-bottom: 2px;
+	border: 1px sold red;
+}
+
+.leader{
+	position: relative;
+	color: black;
+	font-family: 'boostsskregular';
+	font-size: 20px;
+	border: 1px sold red;
+}
+
+.bidInfoWrapper{
+	position: relative;
+	height: calc(100% - 3px);
+	float:right;
+	padding: 5px;
+	line-height: 40px;
+}
+
+.currentBid{
+	position: relative;
+	color: black;
+	font-family: 'boostsskregular';
+	font-size: 20px;
+	bottom: 2px;
+	border: 1px sold red;
+	float: right;
+	margin-right: 5px;
+}
+
+.auctionCoin{
+	position: relative;
+	width: 25px;
+	height: 25px;
+	background-image:url('../images/gratiiCoinIconiOSGradient.png');
+	background-size: 25px 25px;
+	margin-top: 5px;
+	float: right;
+	display: inline-block;
+	border: 1px sold red;
 }
 /*---------END Auctions-----------*/
 

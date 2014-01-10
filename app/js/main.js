@@ -35,18 +35,23 @@ $(document).bind('touchmove', function(e) {
 });
 
 $(window).resize(function() {
+	$(".homeScreenLogo").css({"height":($(window).width()*.5)});
   	$(".mainLI").css({"height":($(window).width()*.5)});
   	$(".arcadeLI").css({"height":($(window).width()*.5)});
   	$(".messageImage").css({"height":($(window).width()*.5)});
 });
 
 $(document).ready(function(){
-
+	$(".homeScreenLogo").css({"height":($(window).width()*.5)});
 	getData("arcade");
 	getData("auctions");
 	getData("inbox");
 	
 	initializeVerticaliScroll(3, false);
+
+	$(".peakAround").click(function(){
+		$(".homeScreen").hide();
+	});
 
 });
 
@@ -204,8 +209,21 @@ var Auction = function(val){ //Game object
 	this.id = val.id;
 	this.title = val.title;
 	this.client = val.client;
+	this.bids = ""+val.bids+"";
+	
+	if(this.bids.slice(-1) == "1" && this.bids.slice(-2) != "11" ){
+		this.bidCountGrammarText = "st";
+	}else if(this.bids.slice(-1) == "2"){
+		this.bidCountGrammarText = "nd";
+	}else if(this.bids.slice(-1) == "3"){
+		this.bidCountGrammarText = "rd";
+	}else{
+		this.bidCountGrammarText = "th";
+	}
+
+	this.leader = val.leader;
+	this.currentBid = val.currentBid;
 	this.image = "images/auctions/"+val.image;
-	this.html = "";
 	
 	this.li = document.createElement('li');
 	this.li.className = "mainLI vSnapToHere";
@@ -262,6 +280,49 @@ Auction.prototype.createLiveAuction = function(){
 	this.auctionStatsWrapperDiv = document.createElement('div');
 	this.auctionStatsWrapperDiv.className = "auctionStatsWrapper";
 	$("#auctions .auctions").append(this.auctionStatsWrapperDiv);
+
+	this.auctionStatsContent = document.createElement('div');
+	this.auctionStatsContent.className = "auctionStatsContent";
+	this.auctionStatsWrapperDiv.appendChild(this.auctionStatsContent);
+
+	this.leaderInfoDiv = document.createElement('div');
+	this.leaderInfoDiv.className = "leaderInfoWrapper";
+	this.auctionStatsContent.appendChild(this.leaderInfoDiv);
+
+	
+	this.bidsDiv = document.createElement('div');
+	this.bidsDiv.className = "bidCount";
+	if(this.bids > 0){
+		this.bidsDiv.innerHTML = this.bids+this.bidCountGrammarText+" bid:";
+	}else{
+		this.bidsDiv.innerHTML = "No bids yet. Be the first!";
+	}
+	this.leaderInfoDiv.appendChild(this.bidsDiv);
+
+	this.leaderDiv = document.createElement('div');
+	this.leaderDiv.className = "leader";
+	if(this.bids > 0){
+		this.leaderDiv.style.color = "blue";
+		this.leaderDiv.innerHTML = this.leader;
+	}else{
+		this.leaderDiv.style.color = "grey";
+		this.leaderDiv.innerHTML = "Tap the coin to bid -->";
+	}
+	this.leaderInfoDiv.appendChild(this.leaderDiv);
+	
+
+	this.bidInfoDiv = document.createElement('div');
+	this.bidInfoDiv.className = "bidInfoWrapper";
+	this.auctionStatsContent.appendChild(this.bidInfoDiv);
+
+	this.auctionCoin = document.createElement('div');
+	this.auctionCoin.className = "auctionCoin";
+	this.bidInfoDiv.appendChild(this.auctionCoin);
+
+	this.currentBidDiv = document.createElement('div');
+	this.currentBidDiv.className = "currentBid";
+	this.currentBidDiv.innerHTML = this.currentBid;
+	this.bidInfoDiv.appendChild(this.currentBidDiv);
 
 	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
 
