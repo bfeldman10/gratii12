@@ -12,6 +12,8 @@ var currentPage = 0,
 	drawAuctionRequested = false,
 	drawInboxRequested = false,
 	drawTransactionsRequested = false,
+	stopSignVisible = false,
+	loggedIn = false,
 	newMessages = 0,
 	clickEvent = "click",
 	Userpro = 0,
@@ -42,18 +44,57 @@ $(window).resize(function() {
 });
 
 $(document).ready(function(){
+
 	$(".homeScreenLogo").css({"height":($(window).width()*.5)});
 	getData("arcade");
 	getData("auctions");
 	getData("inbox");
-	
+	hideFunctions();
+
+
 	initializeVerticaliScroll(3, false);
 
-	$(".peakAround").click(function(){
+});
+
+// START home screen------------------------
+function hideFunctions(){
+	$(".peakAround").on(clickEvent, function(){
+		event.preventDefault();
 		$(".homeScreen").hide();
 	});
 
-});
+	$("body").on(clickEvent, function(){
+		if(stopSignVisible===true){
+			hideStopSign();
+		}
+	});
+
+	$(".backToHomeIcon").on(clickEvent, function(){
+		//event.preventDefault();
+		$(".loginWrapper").hide();
+		$(".signupWrapper").hide();
+		$(".homeScreenButtonWrapper").show();
+	});
+
+	$(".login.button").on(clickEvent, function(){
+		event.preventDefault();
+		$(".homeScreenButtonWrapper").hide();
+		$(".loginWrapper").show();
+	});
+
+	$(".signUp.button").on(clickEvent, function(){
+		event.preventDefault();
+		$(".homeScreenButtonWrapper").hide();
+		$(".signupWrapper").show();
+	});
+
+	$(".whatFor").on(clickEvent, function(){
+		alert("Knowing the demographics of our fans helps us get better prizes for you. Also, certain prizes offered on Gratii have age restrictions. We will never share your personally identified information with any third party. Period.");
+	})
+	
+	
+}
+// END home screen------------------------
 
 // iScroll Functions-------------------------------
 
@@ -108,7 +149,6 @@ var Game = function(val){ //Game object
 	this.myHighScore = val.myHighScore;
 	this.myTotalGratii = val.myTotalGratii;
 	this.topTen = val.topTen;
-	// this.topTenHTML = this.createTopTenTable(this.topTen);
 	
 	this.li = document.createElement('li');
 	this.li.className = "mainLI vSnapToHere";
@@ -224,6 +264,7 @@ var Auction = function(val){ //Game object
 	this.leader = val.leader;
 	this.currentBid = val.currentBid;
 	this.image = "images/auctions/"+val.image;
+	this.inputVisible = false;
 	
 	this.li = document.createElement('li');
 	this.li.className = "mainLI vSnapToHere";
@@ -231,6 +272,63 @@ var Auction = function(val){ //Game object
 	this.li.style.height = $(window).width()*.5;
 	
 	auctionObjects.push(this);
+}
+
+Auction.prototype.placeBidClick = function(){
+
+	if(loggedIn===false){
+		showStopSign("anonPlaceBid");
+	}
+	
+}
+
+Auction.prototype.showBidInputs = function(){
+
+	that = this.Auction;
+	console.log(that.bidInfoDiv);
+
+	event.stopPropagation();
+	if(that.inputVisible === false){
+
+		that.currentBidDiv.style.display = "none";
+		that.auctionCoin.style.display = "none";
+
+		that.newBidButton = document.createElement('div');
+		that.newBidButton.className = "newBidButton";
+		that.newBidButton.innerHTML = "Place bid";
+		that.bidInfoDiv.appendChild(that.newBidButton);
+
+		that.newBidInput = document.createElement('input');
+		that.newBidInput.className = "newBidInput";
+		that.newBidInput.type = "number";
+		that.newBidInput.placeholder = that.currentBid;
+		that.bidInfoDiv.appendChild(that.newBidInput);
+
+		that.inputVisible = true;
+
+		that.newBidButton.addEventListener(clickEvent, {
+                             handleEvent:that.placeBidClick,                  
+                             Auction:that}, false);
+
+
+	}
+}
+
+Auction.prototype.removeBidInputs = function(){
+
+	that = this.Auction;
+
+	if(that.inputVisible === true){
+
+		that.newBidInput.style.display = "none";
+		that.newBidButton.style.display = "none";
+		that.currentBidDiv.style.display = "";
+		that.auctionCoin.style.display = "";
+
+		that.inputVisible = false;
+
+	}
+
 }
 
 Auction.prototype.createLiveAuction = function(){
@@ -323,6 +421,18 @@ Auction.prototype.createLiveAuction = function(){
 	this.currentBidDiv.className = "currentBid";
 	this.currentBidDiv.innerHTML = this.currentBid;
 	this.bidInfoDiv.appendChild(this.currentBidDiv);
+
+	this.bidInfoDiv.addEventListener(clickEvent, {
+                             handleEvent:this.showBidInputs,                  
+                             Auction:this}, false);
+
+	this.scrollerDiv.addEventListener(clickEvent, {
+                             handleEvent:this.removeBidInputs,                  
+                             Auction:this}, false);
+
+	this.auctionStatsWrapperDiv.addEventListener(clickEvent, {
+                             handleEvent:this.removeBidInputs,                  
+                             Auction:this}, false);
 
 	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
 
@@ -925,6 +1035,24 @@ $("#profile .scopeButton").on(clickEvent, function(){ //Mobile touch on navItem
 });
 // End of Profile Nav Functions-------------
 
+// start STOP SIGN-----------------
+function showStopSign(){
+	$(".stopSignWrapper").show(function(){
+		$(".stopSignWrapper").animate({bottom:"51px"}, 500);
+	});
+	
+	stopSignVisible = true;
+}
+
+function hideStopSign(){
+	$(".stopSignWrapper").animate({bottom:"-300px"}, 500, function(){
+		$(".stopSignWrapper").hide();
+	});
+	
+	stopSignVisible = false;
+}
+// end STOP SIGN----------------
+
 
 // Input Checkers--------------------
 function textCounter(){
@@ -941,15 +1069,5 @@ function textCounter(){
   		$('#inbox .sendButton').css({"border":"1px solid blue"});
  	}
 }
-
-
-function inputFocus(){
-	//alert("test hide");
-	$("body").css({'min-heilkght':'500px'});
-}
-function inputBlur(){
-	// $(".header").css({'position':'fixed'});
-}
-
 // End of Input Checkers--------------------
 

@@ -33,7 +33,7 @@ html, body{
 
 /*-------start HOME SCREEN------------*/
 .homeScreen{
-	position: fixed;
+	position: absolute;
 	width: 100%;
 	height:100%;
 	z-index: 10;
@@ -51,11 +51,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 .homeScreenLogo{
 	position: relative;
 	margin: 0px auto;
-	margin-top: 20px;
-	margin-bottom: 50px;
+	margin-top: 0px;
+	margin-bottom: 25px;
 	width: 100%;
 	background-image: url('../images/gratiiColorShadowHomeLogo.png');
-	/*background-image: url('../images/gratiiWhiteShadow.png');*/
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	max-width: 800px;
@@ -67,7 +66,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 	position: absolute;
 	width: 100%;
 	margin: 0px auto;
-	/*bottom:30px;*/
+	bottom: 50px;
 }
 
 .homeScreen .button{
@@ -93,9 +92,182 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 	font-size: 28px;
 	margin-bottom: 10px;
 	width: 80%;
-	/*border: 2px solid blue;*/
+}
+
+.loginContainer{
+	position: absolute;
+	width: 100%;
+	/*bottom: 150px;*/
+}
+
+.loginWrapper{
+	position: relative;
+	display: none;
+	width:90%;
+	margin: 0px auto;
+}
+
+.signupContainer{
+	position: absolute;
+	width: 100%;
+	/*bottom: 150px;*/
+}
+
+.signupWrapper{
+	position: relative;
+	display: none;
+	width:90%;
+	margin: 0px auto;
+}
+
+.homeInput{
+	position: relative;
+	width: 100%;
+	border: 1px solid blue;
+	font-family: "boostsskregular";
+	font-size: 18px;
+	height: 40px;
+	line-height: 40px;
+	color: blue;
+	float: left;
+}
+
+.homeButton{
+	position: relative;
+	width: 100%;
+	border: 1px solid blue;
+	font-family: "boostsskregular";
+	font-size: 18px;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 4px;
+	color: blue;
+	text-align: center;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	float: left;
+}
+
+.homeButton:active{
+	background-color: lightgreen;
+}
+
+.homeInput.top{
+	border-top-left-radius: 4px; 
+	border-top-right-radius: 4px; 
+	border-bottom-left-radius: 0px; 
+	border-bottom-right-radius: 0px; 
+}
+
+.homeInput.middle{
+	border-top: 0px;
+	border-top-left-radius: 0px; 
+	border-top-right-radius: 0px; 
+	border-bottom-left-radius: 0px; 
+	border-bottom-right-radius: 0px; 
+}
+
+.homeInput.bottom{
+	border-top: 0px;
+	border-top-left-radius: 0px; 
+	border-top-right-radius: 0px; 
+	border-bottom-left-radius: 4px; 
+	border-bottom-right-radius: 4px; 
+	margin-bottom: 5px;
+}
+
+.emailInput{
+	display: none;
+	border: 1px solid red;
+	width:90%;
+	margin: 0px auto;
+}
+
+.backToHomeIcon{
+	width: 35px;
+	height: 35px;
+	background-image: url('../images/backArrow.png');
+	background-size: 35px 35px;
+	background-repeat: no-repeat;
+	margin-bottom: 5px;
+}
+
+.backToHomeText{
+	font-family: "Trebuchet MS";
+	font-size: 18px;
+}
+
+.signupWrapper .sectionInputSelect{
+	position: relative;
+	height: 35px;
+	/*width: 100%;*/
+	box-sizing: border-box; 
+	font-family: "boostsskregular";
+	font-size: 18px;
+	color: blue;
+	line-height: 35px;
+	border: 1px solid blue;
+	margin-top: 5px;
+}
+
+.signupWrapper .monthSelect{
+	width: 32%;
+}
+
+.signupWrapper .dateSelect{
+	width: 25%;
+}
+
+.signupWrapper .yearSelect{
+	width: 32%;
+}
+
+.signupWrapper .genderSelect{
+	margin-bottom: 5px;
+	width: 60%;
+}
+
+.whatFor{
+	font-family: "Trebuchet MS";
+	margin-left: 20px;
+	color: blue;
+}
+
+.forgotPassword{
+	font-family: "Trebuchet MS";
+	float: right;
+	color: blue;
+}
+
+.tos{
+	width: 100%;
+	font-size: 12px;
+	text-align: center;
+	font-family: "Trebuchet MS";
 }
 /*-------end HOME SCREEN------------*/
+
+
+
+
+
+
+/*-------start STOP SIGN------------*/
+.stopSignWrapper{
+	position: fixed;
+	display: none;
+	height: 300px;
+	width: 100%;
+	left: 0%;
+	margin: 0px auto;
+	bottom: -300px;
+	border-top: 5px solid red;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background-color: rgba(255, 255, 255, .9);
+	z-index: 4;
+}
+/*-------end STOP SIGN------------*/
 
 
 
@@ -511,9 +683,44 @@ td{
 	font-family: 'boostsskregular';
 	font-size: 20px;
 	bottom: 2px;
-	border: 1px sold red;
 	float: right;
 	margin-right: 5px;
+}
+
+.newBidInput{
+	position: relative;
+	float: right;
+	margin-right: 5px;
+	width: 100px;
+	height: 35px;
+	line-height: 35px;
+	font-family: "boostsskregular";
+	font-size: 18px;
+	color: black;
+	text-align: right;
+	bottom: 2px;
+	border: 1px solid blue;
+	border-radius: 4px;
+}
+
+.newBidButton{
+	position: relative;
+	float: right;
+	margin-right: 0px;
+	width: 90px;
+	height: 33px;
+	line-height: 35px;
+	font-family: "boostsskregular";
+	font-size: 18px;
+	color: blue;
+	text-align: center;
+	bottom: 2px;
+	border: 1px solid blue;
+	border-radius: 4px;
+}
+
+.newBidButton:active{
+	background-color: lightgreen;
 }
 
 .auctionCoin{
@@ -525,7 +732,6 @@ td{
 	margin-top: 5px;
 	float: right;
 	display: inline-block;
-	border: 1px sold red;
 }
 /*---------END Auctions-----------*/
 
@@ -747,7 +953,7 @@ td{
 	color: blue;
 	line-height: 35px;
 	border: 1px solid blue;
-	border-radius: 0px
+	border-radius: 0px;
 }
 
 .sectionInputText.top {
@@ -764,7 +970,7 @@ td{
 #profile .settings .sectionInputSelect{
 	position: relative;
 	height: 35px;
-	width: 100%;
+	/*width: 100%;*/
 	box-sizing: border-box; 
 	font-family: "boostsskregular";
 	font-size: 18px;
@@ -772,6 +978,18 @@ td{
 	line-height: 35px;
 	border: 1px solid blue;
 	margin-top: 5px;
+}
+
+#profile .monthSelect{
+	width: 32%;
+}
+
+#profile .dateSelect{
+	width: 25%;
+}
+
+#profile .yearSelect{
+	width: 32%;
 }
 
 #profile .settings .avatar{
