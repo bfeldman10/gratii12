@@ -2,6 +2,7 @@ var currentPage = 0,
 	currentAuctionScope = 0,
 	currentProfileScope = 0,
 	currentInboxScope = 0,
+	secondsPerAuction = 1800,
 	gameObjects = [],
 	auctionObjects = [],
 	inboxObjects = [],
@@ -113,6 +114,10 @@ function initializeVerticaliScroll(pageIndex, snapTo){
 	this.snapTo = snapTo;
 	this.momentum = pageIndex==1?false:true;
 	this.wrapperEl = "iScrollVerticalWrapper"+pageIndex;
+
+	if(verticaliScrolls[pageIndex]){
+		verticaliScrolls[pageIndex].destroy();
+	}
 
 	verticaliScrolls[pageIndex] = new iScroll(wrapperEl, { 
 		snap: this.snapTo,
@@ -401,6 +406,7 @@ var Auction = function(val){ //Game object
 	this.twitter = val.twitter;
 	this.secondsUntilStart = val.secondsUntilStart;
 	this.secondsRemaining = val.secondsRemaining;
+	this.secondsLasted = val.secondsLasted;
 	this.inputVisible = false;
 	
 	this.li = document.createElement('li');
@@ -409,6 +415,96 @@ var Auction = function(val){ //Game object
 	this.li.style.height = $(window).width()*.5;
 	
 	auctionObjects.push(this);
+}
+
+function getAuctionObjectByID(id){
+	var idRequested = id;
+	for(var i=0; i<auctionObjects.length; i++){
+		if(auctionObjects[i].id==idRequested){
+			return i;
+		}
+	}
+}
+
+function updateLiveAuctionAfterBidFromNode(auctionID, leader, bid){
+	var i = getAuctionObjectByID(auctionID);
+	auctionObjects[i].bids++;
+	var totalBids = ""+auctionObjects[i].bids+"";
+	console.log(totalBids);
+	if(totalBids.slice(-1) == "1" && totalBids.slice(-2) != "11" ){
+		auctionObjects[i].bidCountGrammarText = "st";
+	}else if(totalBids.slice(-1) == "2" && totalBids.slice(-2) != "12"){
+		auctionObjects[i].bidCountGrammarText = "nd";
+	}else if(totalBids.slice(-1) == "3" && totalBids.slice(-2) != "13"){
+		auctionObjects[i].bidCountGrammarText = "rd";
+	}else{
+		auctionObjects[i].bidCountGrammarText = "th";
+	}
+	auctionObjects[i].currentBid = bid;
+	auctionObjects[i].leader = leader;
+	auctionObjects[i].secondsRemaining = secondsPerAuction;
+	auctionObjects[i].leaderDiv.innerHTML = leader;
+	auctionObjects[i].styleLiveAuctionStats(true);
+}
+
+Auction.prototype.styleLiveAuctionStats = function(viaNode){
+	
+	if(viaNode===true){
+		console.log("fafffff");
+    	$( ".auctionStatsContent" ).effect( "highlight", {color:"lightgreen"}, 800);
+	}
+	
+	this.auctionStatsContent.innerHTML = "";
+	this.leaderInfoDiv = document.createElement('div');
+	this.leaderInfoDiv.className = "leaderInfoWrapper";
+	this.auctionStatsContent.appendChild(this.leaderInfoDiv);
+	
+	this.bidsDiv = document.createElement('div');
+	this.bidsDiv.className = "bidCount";
+	if(this.bids > 0){
+		this.bidsDiv.innerHTML = this.bids+this.bidCountGrammarText+" bid:";
+	}else{
+		this.bidsDiv.innerHTML = "No bids yet. Be the first!";
+	}
+	this.leaderInfoDiv.appendChild(this.bidsDiv);
+	console.log(this.bids);
+	this.leaderDiv = document.createElement('div');
+	this.leaderDiv.className = "leader";
+	if(this.bids > 0){
+		this.leaderDiv.style.color = "black";
+		this.leaderDiv.innerHTML = this.leader;
+	}else{
+		this.leaderDiv.style.color = "grey";
+		this.leaderDiv.innerHTML = "Tap the coin to bid -->";
+	}
+	this.leaderInfoDiv.appendChild(this.leaderDiv);
+	
+
+	this.bidInfoDiv = document.createElement('div');
+	this.bidInfoDiv.className = "bidInfoWrapper";
+	this.auctionStatsContent.appendChild(this.bidInfoDiv);
+
+	this.auctionCoin = document.createElement('div');
+	this.auctionCoin.className = "auctionCoin";
+	this.bidInfoDiv.appendChild(this.auctionCoin);
+
+	this.currentBidDiv = document.createElement('div');
+	this.currentBidDiv.className = "currentBid";
+	this.currentBidDiv.innerHTML = this.currentBid;
+	this.bidInfoDiv.appendChild(this.currentBidDiv);
+
+	this.bidInfoDiv.addEventListener(clickEvent, {
+                             handleEvent:this.showBidInputs,                  
+                             Auction:this}, false);
+
+	this.scrollerDiv.addEventListener(clickEvent, {
+                             handleEvent:this.removeBidInputs,                  
+                             Auction:this}, false);
+
+	this.auctionStatsWrapperDiv.addEventListener(clickEvent, {
+                             handleEvent:this.removeBidInputs,                  
+                             Auction:this}, false);
+	
 }
 
 Auction.prototype.placeBidClick = function(){
@@ -504,7 +600,7 @@ Auction.prototype.styleTwitter = function(){
 
 Auction.prototype.styleLiveTimerDynamicProperties = function(){
 
-	var widthPercentage = ((1-(this.secondsRemaining/1800))*100).toFixed(1);
+	var widthPercentage = ((1-(this.secondsRemaining/secondsPerAuction))*100).toFixed(1);
 	this.auctionTimerBlackout.style.width = widthPercentage+"%";
 
 	if(this.secondsRemaining!=0){
@@ -672,56 +768,7 @@ Auction.prototype.createLiveAuction = function(){
 	this.auctionStatsContent.className = "auctionStatsContent";
 	this.auctionStatsWrapperDiv.appendChild(this.auctionStatsContent);
 
-	this.leaderInfoDiv = document.createElement('div');
-	this.leaderInfoDiv.className = "leaderInfoWrapper";
-	this.auctionStatsContent.appendChild(this.leaderInfoDiv);
-
-	
-	this.bidsDiv = document.createElement('div');
-	this.bidsDiv.className = "bidCount";
-	if(this.bids > 0){
-		this.bidsDiv.innerHTML = this.bids+this.bidCountGrammarText+" bid:";
-	}else{
-		this.bidsDiv.innerHTML = "No bids yet. Be the first!";
-	}
-	this.leaderInfoDiv.appendChild(this.bidsDiv);
-
-	this.leaderDiv = document.createElement('div');
-	this.leaderDiv.className = "leader";
-	if(this.bids > 0){
-		this.leaderDiv.style.color = "black";
-		this.leaderDiv.innerHTML = this.leader;
-	}else{
-		this.leaderDiv.style.color = "grey";
-		this.leaderDiv.innerHTML = "Tap the coin to bid -->";
-	}
-	this.leaderInfoDiv.appendChild(this.leaderDiv);
-	
-
-	this.bidInfoDiv = document.createElement('div');
-	this.bidInfoDiv.className = "bidInfoWrapper";
-	this.auctionStatsContent.appendChild(this.bidInfoDiv);
-
-	this.auctionCoin = document.createElement('div');
-	this.auctionCoin.className = "auctionCoin";
-	this.bidInfoDiv.appendChild(this.auctionCoin);
-
-	this.currentBidDiv = document.createElement('div');
-	this.currentBidDiv.className = "currentBid";
-	this.currentBidDiv.innerHTML = this.currentBid;
-	this.bidInfoDiv.appendChild(this.currentBidDiv);
-
-	this.bidInfoDiv.addEventListener(clickEvent, {
-                             handleEvent:this.showBidInputs,                  
-                             Auction:this}, false);
-
-	this.scrollerDiv.addEventListener(clickEvent, {
-                             handleEvent:this.removeBidInputs,                  
-                             Auction:this}, false);
-
-	this.auctionStatsWrapperDiv.addEventListener(clickEvent, {
-                             handleEvent:this.removeBidInputs,                  
-                             Auction:this}, false);
+	this.styleLiveAuctionStats();
 
 	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
 }
@@ -884,20 +931,20 @@ Auction.prototype.createPastAuction = function(){
 	this.auctionFrameDivA.id = "a";
 	this.scrollerDiv.appendChild(this.auctionFrameDivA);
 
-	this.auctionContent = document.createElement('div');
-	this.auctionContent.className = "auctionContent";
-	this.auctionContent.style.backgroundImage = "url('"+this.image+"')";
-	this.auctionFrameDivA.appendChild(this.auctionContent);
+	this.auctionContentA = document.createElement('div');
+	this.auctionContentA.className = "auctionContent";
+	this.auctionContentA.style.backgroundImage = "url('"+this.image+"')";
+	this.auctionFrameDivA.appendChild(this.auctionContentA);
 
 	this.auctionFrameDivB = document.createElement('div');
 	this.auctionFrameDivB.className = "auctionFrame";
 	this.auctionFrameDivB.id = "b";
 	this.scrollerDiv.appendChild(this.auctionFrameDivB);
 
-	this.auctionContent = document.createElement('div');
-	this.auctionContent.className = "auctionContent";
-	this.auctionContent.innerHTML = "--The Deets Go Here--";
-	this.auctionFrameDivB.appendChild(this.auctionContent);
+	this.auctionContentB = document.createElement('div');
+	this.auctionContentB.className = "auctionContent";
+	this.auctionContentB.innerHTML = "--The Deets Go Here--";
+	this.auctionFrameDivB.appendChild(this.auctionContentB);
 
 	this.indicatorUL = document.createElement('ul');
 	this.indicatorUL.id = "indicator";
@@ -910,17 +957,76 @@ Auction.prototype.createPastAuction = function(){
 	this.inactiveLI = document.createElement('li');
 	this.indicatorUL.appendChild(this.inactiveLI);
 
+	this.auctionTimerContainer = document.createElement('div');
+	this.auctionTimerContainer.className = "auctionTimerContainer";
+	$("#auctions .auctions").append(this.auctionTimerContainer);
+
+	this.auctionTimerWrapper = document.createElement('div');
+	this.auctionTimerWrapper.className = "auctionTimerWrapper";
+	this.auctionTimerContainer.appendChild(this.auctionTimerWrapper);
+
+	this.upnextTimerDiv = document.createElement('div');
+	this.upnextTimerDiv.className = "upnextTimer";
+	this.upnextTimerDiv.innerHTML = "Duration: "+convertSecondsToTimer(this.secondsLasted);
+	this.auctionTimerWrapper.appendChild(this.upnextTimerDiv);
+
+	this.auctionTitleContainerDiv = document.createElement('div');
+	this.auctionTitleContainerDiv.className = "auctionTitleContainer";
+	$("#auctions .auctions").append(this.auctionTitleContainerDiv);
+
 	this.auctionTitleWrapperDiv = document.createElement('div');
 	this.auctionTitleWrapperDiv.className = "auctionTitleWrapper";
-	this.auctionTitleWrapperDiv.innerHTML = "past: "+this.client+" - "+this.title;
-	$("#auctions .auctions").append(this.auctionTitleWrapperDiv);
+	this.auctionTitleContainerDiv.appendChild(this.auctionTitleWrapperDiv);
+
+	this.auctionClientDiv = document.createElement('div');
+	this.auctionClientDiv.className = "auctionClientDiv";
+	this.auctionClientDiv.innerHTML = this.client;
+	this.auctionTitleWrapperDiv.appendChild(this.auctionClientDiv);
+
+	this.auctionTitleDiv = document.createElement('div');
+	this.auctionTitleDiv.className = "auctionTitleDiv";
+	this.auctionTitleDiv.innerHTML = this.title;
+	this.auctionTitleWrapperDiv.appendChild(this.auctionTitleDiv);
 
 	this.auctionStatsWrapperDiv = document.createElement('div');
 	this.auctionStatsWrapperDiv.className = "auctionStatsWrapper";
 	$("#auctions .auctions").append(this.auctionStatsWrapperDiv);
 
-	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
+	this.auctionStatsContent = document.createElement('div');
+	this.auctionStatsContent.className = "auctionStatsContent";
+	this.auctionStatsWrapperDiv.appendChild(this.auctionStatsContent);
 
+	this.leaderInfoDiv = document.createElement('div');
+	this.leaderInfoDiv.className = "leaderInfoWrapper";
+	this.auctionStatsContent.appendChild(this.leaderInfoDiv);
+
+	this.bidsDiv = document.createElement('div');
+	this.bidsDiv.className = "bidCount";
+	this.bidsDiv.style.color = "red";
+	this.bidsDiv.style.fontWeight = "bold";
+	this.bidsDiv.innerHTML = "Winner ("+this.bids+this.bidCountGrammarText+" bid):";
+	this.leaderInfoDiv.appendChild(this.bidsDiv);
+
+	this.leaderDiv = document.createElement('div');
+	this.leaderDiv.className = "leader";
+	this.leaderDiv.style.color = "black";
+	this.leaderDiv.innerHTML = this.leader;
+	this.leaderInfoDiv.appendChild(this.leaderDiv);
+	
+	this.bidInfoDiv = document.createElement('div');
+	this.bidInfoDiv.className = "bidInfoWrapper";
+	this.auctionStatsContent.appendChild(this.bidInfoDiv);
+
+	this.auctionCoin = document.createElement('div');
+	this.auctionCoin.className = "auctionCoin";
+	this.bidInfoDiv.appendChild(this.auctionCoin);
+
+	this.currentBidDiv = document.createElement('div');
+	this.currentBidDiv.className = "currentBid";
+	this.currentBidDiv.innerHTML = this.currentBid;
+	this.bidInfoDiv.appendChild(this.currentBidDiv);
+
+	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
 }
 
 
@@ -1237,11 +1343,11 @@ function getData(dataRequested){
 			URL = 'js/liveAuctions.json';
 		}else if(currentAuctionScope===1){
 			URL = 'js/upnextAuctions.json';
-		}else if(currentAuctionScope===1){
+		}else if(currentAuctionScope===2){
 			URL = 'js/pastAuctions.json';
 		}
 
-		messageObjects = [];
+		auctionObjects = [];
 		$.ajax({
 	        url: URL,
 	        type: 'GET',
@@ -1279,7 +1385,7 @@ function getData(dataRequested){
 
 	}else if(dataRequested==="transactions"){
 		
-		messageObjects = [];
+		transactionObjects = [];
 		$.ajax({
 	        url: 'js/transactions.json',
 	        type: 'GET',

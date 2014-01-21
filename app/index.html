@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Gratii 1210</title>
+	<title>Gratii 12</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 	<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, target-densityDpi=device-dpi" /> -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -10,6 +10,7 @@
      <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/gratiiCoinIconRed.png" />
      <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/gratiiCoinIconRed.png" />
 	<!-- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> -->
+	<link rel="stylesheet" href="js/jqueryui/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
 	<link rel="stylesheet" href="css/main.css?v=1">
 <script type="text/javascript" src="js/iscroll-4/src/iscroll.js?v=2"></script>
 
@@ -71,7 +72,13 @@
 				<input type="text" class="email homeInput top" placeholder="email" />
 				<input type="text" class="usernameInput homeInput middle" placeholder="username" />
 				<input type="password" class="passwordInput homeInput bottom" placeholder="password" />
+				<select class="sectionInputSelect genderSelect input" id="gender">
+					<option selected disabled>Gender</option>
+				  	<option value="male">I am man.</option>
+				 	<option value="female">I am woman.</option>
+				</select> <a class="whatFor">what for?</a>
 				<select class="sectionInputSelect monthSelect input" id="age">
+					<option selected disabled>M</option>
 					<option value="1">Jan</option>
 				  	<option value="2">Feb</option>
 				 	<option value="3">Mar</option>
@@ -86,6 +93,7 @@
 				 	<option value="12">Dec</option>
 				</select>
 				<select class="sectionInputSelect dateSelect input" id="age">
+					<option selected disabled>D</option>
 					<option value="1">01</option>
 				  	<option value="2">02</option>
 				 	<option value="3">03</option>
@@ -119,6 +127,7 @@
 				 	<option value="31">31</option>
 				</select>
 				<select class="sectionInputSelect yearSelect input" id="age">
+					<option selected disabled>Y</option>
 					<option value="2012">2012</option> 
 					<option value="2011">2011</option> 
 					<option value="2010">2010</option> 
@@ -220,10 +229,6 @@
 					<option value="1914">1914</option> 
 					<option value="1913">1913</option> 
 				</select>
-				<select class="sectionInputSelect genderSelect input" id="gender">
-				  	<option value="male">I am man.</option>
-				 	<option value="female">I am woman.</option>
-				</select> <a class="whatFor">what for?</a>
 				<div class="signupButton homeButton">Let's go!
 				</div>
 				<div class="tos"> By clicking Let's go! you are agreeing to the <a href="http://gratii.com" target="_blank" style="color:blue;">Terms and Conditions.</a>
@@ -347,6 +352,10 @@
 							</div>
 							<input type="text" class="sectionInputText input top" id="email" placeholder="email" />
 							<input type="text" class="sectionInputText input bottom" id="username" placeholder="username" />
+							<select class="sectionInputSelect input" id="gender">
+							  	<option value="m">I am man.</option>
+							 	<option value="f">I am woman.</option>
+							</select></br>
 							<select class="sectionInputSelect monthSelect input" id="month">
 								<option value="1">Jan</option>
 							  	<option value="2">Feb</option>
@@ -496,10 +505,6 @@
 								<option value="1914">1914</option> 
 								<option value="1913">1913</option> 
 							</select>
-							<select class="sectionInputSelect input" id="gender">
-							  	<option value="m">I am man.</option>
-							 	<option value="f">I am woman.</option>
-							</select>
 							<div class="sectionButton" id="save">Save
 							</div>
 						</div>
@@ -600,5 +605,6 @@
 	<!--End Footer-->
 </body>
 	<script src="js/jquery.js.min?v=1"></script>
+	<script src="js/jqueryui/js/jquery-ui-1.10.4.custom.min.js"></script>
 	<script src="js/main.js?v=1"></script>
 </html>

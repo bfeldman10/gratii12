@@ -924,6 +924,7 @@ td{
 	position: relative;
 	margin: 0px auto;
 	max-width: 800px;
+	height: 100%;
 }
 
 .leaderInfoWrapper{
@@ -1037,9 +1038,8 @@ td{
 	width: 90%;
 	margin: 0px auto;
 	text-align: center;
-	font-size: 18px;
-	font-family: 'boostsskregular';
-	text-decoration: underline;
+	font-size: 20px;
+	font-family: 'Trebuchet MS';]
 	color: black;
 }
 
@@ -1374,14 +1374,14 @@ td{
 	position: absolute;
 	font-family: 'Trebuchet MS';
 	font-size: 12px;
-	margin-top:-15px;
+	margin-top:-12px;
 }
 
 .transactionTimestamp{
 	position: absolute;
 	font-family: 'Trebuchet MS';
 	font-size: 12px;
-	margin-top:-15px;
+	margin-top:-12px;
 	right: 5px;
 }
 
