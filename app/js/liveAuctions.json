@@ -1,12 +1,13 @@
 [
 	{
 		"id": "1", 
-		"title": "Slap Bracelent", 
-		"client": "Gratii",
-		"image":"gratii-bracelet.jpg",
+		"title": "$5 Off Starter Kit", 
+		"client": "blu",
+		"image":"bluDroff2.png",
 		"bids":5,
 		"leader":"bfeldman",
-		"currentBid":105
+		"currentBid":1845,
+		"secondsRemaining":600
 	},
 	{
 		"id": "2", 
@@ -15,16 +16,18 @@
 		"image":"plunder.jpg",
 		"bids":23,
 		"leader":"mzumaran",
-		"currentBid":1718
+		"currentBid":1718,
+		"secondsRemaining":1000
 	},
 	{
 		"id": "3", 
-		"title": "$10 Off any order!", 
+		"title": "$10 Off any online item!", 
 		"client": "Route 1 Apparel",
 		"image":"route.jpg",
 		"bids":111,
 		"leader":"lkhin",
-		"currentBid":4500
+		"currentBid":4500,
+		"secondsRemaining":1600
 	},
 	{
 		"id": "4", 
@@ -33,7 +36,8 @@
 		"image":"vaperfy.jpg",
 		"bids":0,
 		"leader":"bfeldman",
-		"currentBid":0
+		"currentBid":0,
+		"secondsRemaining":1800
 	},
 	{
 		"id": "5", 
@@ -42,6 +46,7 @@
 		"image":"gratii-tee.jpg",
 		"bids":0,
 		"leader":"bfeldman",
-		"currentBid":0
+		"currentBid":0,
+		"secondsRemaining":1800
 	}
 ]

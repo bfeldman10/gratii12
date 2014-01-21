@@ -14,10 +14,7 @@ var currentPage = 0,
 	drawTransactionsRequested = false,
 	stopSignVisible = false,
 	loggedIn = false,
-	newMessages = 0,
-	clickEvent = "click",
-	Userpro = 0,
-	profileSettingHTML = "";
+	newMessages = 0;
 
 
 function is_touch_device() {
@@ -46,15 +43,25 @@ $(window).resize(function() {
 $(document).ready(function(){
 
 	$(".homeScreenLogo").css({"height":($(window).width()*.5)});
+	getData("session");
 	getData("arcade");
 	getData("auctions");
 	getData("inbox");
+	getData("transactions");
 	hideFunctions();
-
 
 	initializeVerticaliScroll(3, false);
 
 });
+
+// $("input, select, textarea").focus( function(){
+// 	console.log('welp');
+// 	$("input, select, textarea").not(this).prop('disabled', true);
+// });
+
+// $("input, select, textarea").blur( function(){
+// 	$("input, select, textarea").not(this).prop('disabled', false);
+// });
 
 // START home screen------------------------
 function hideFunctions(){
@@ -69,8 +76,11 @@ function hideFunctions(){
 		}
 	});
 
+	$("#arcade .cancelButton").on(clickEvent, function(){
+		$("#arcade .challenge").hide();
+	});
+
 	$(".backToHomeIcon").on(clickEvent, function(){
-		//event.preventDefault();
 		$(".loginWrapper").hide();
 		$(".signupWrapper").hide();
 		$(".homeScreenButtonWrapper").show();
@@ -139,6 +149,71 @@ function initializeHorizontaliScroll(wrapperID){
 // End iScroll Functions-------------------------------
 
 
+
+
+// start of User-------------------------
+var User = function(val){ //Game object
+	this.id = val.id;
+	this.email = val.email;
+	this.username = val.username;
+	this.month = val.month;
+	this.date = val.date;
+	this.year = val.year;
+	this.gender = val.gender;
+	this.PRO = val.PRO;
+	this.gratii = val.gratii;
+	this.newMessages = 0;	
+}
+
+User.prototype.completeProfile = function(){
+	$("#profile #email").val(this.email);
+	$("#profile #username").val(this.username);
+	$("#profile #month").val(this.month);
+	$("#profile #date").val(this.date);
+	$("#profile #year").val(this.year);
+	$("#profile #gender").val(this.gender);
+	$(".header .gratiiScore").html(this.gratii);
+}
+
+/*****************FOR GRATII ANIM TESTING ONLY:::REMOVE LATER!!**************/
+$(".header .gratiiCoin").on(clickEvent, function(){
+	user.changeGratii(7);
+});	
+/*****************FOR GRATII ANIM TESTING ONLY:::REMOVE LATER!!**************/
+
+User.prototype.changeGratii = function(changeInGratii){
+	if(changeInGratii>=0){
+		var changeSymbol = "+";
+		var changeColor = "green";
+	}else{
+		var changeSymbol = "";
+		var changeColor = "red";
+	}
+	
+
+	
+	$(".header .gratiiScore").html(changeSymbol+changeInGratii);
+	$(".header .gratiiScore").css({color:changeColor});
+	$(".header .gratiiScore").animate({opacity:".2", fontSize:"60px"}, {
+	    queue:    false,
+	    duration: 1300,
+	    complete: function() { 
+	        var beforeGratii = parseInt(user.gratii);
+			user.gratii = beforeGratii + changeInGratii;
+			$(".header .gratiiScore").html(user.gratii);
+			$(".header .gratiiScore").css({color:"black", fontSize:"24px", opacity:"1", zIndex:""});
+	    }
+	});
+	
+	
+
+
+}
+
+
+// end of User-------------------------
+
+
 // start of Arcade-------------------------
 var Game = function(val){ //Game object
 	this.id = val.id;
@@ -157,6 +232,58 @@ var Game = function(val){ //Game object
 
 
 	gameObjects.push(this);
+}
+
+Game.prototype.challengeClick = function(event){
+		
+	event.stopPropagation();
+	if(stopSignVisible===false){
+		var stopSignTitle = document.createElement('div');
+		stopSignTitle.className = "stopSignTitle";
+		stopSignTitle.innerHTML = "Create a Challenge: "+this.Game.title;
+		$(".stopSignWrapper").append(stopSignTitle);
+
+		var stopSignSubTitle = document.createElement('div');
+		stopSignSubTitle.className = "stopSignSubTitle";
+		stopSignSubTitle.innerHTML = "<b>Rules:</b> Enter your oppenent's name.</br>Enter how much gratii you want to wager.</br>Try to get the highest score you can.</br>No do-overs. Winner takes all!";
+		$(".stopSignWrapper").append(stopSignSubTitle);
+
+		var formWrapper = document.createElement('div');
+		formWrapper.className = ('formWrapper');
+		$(".stopSignWrapper").append(formWrapper);
+
+		var formInputText1 = document.createElement('input');
+		formInputText1.type = ('text');
+		formInputText1.placeholder = ('Opponent\'s username');
+		formInputText1.className = ('formInputText top');
+		formInputText1.id = ('challengee');
+		formInputText1.addEventListener(clickEvent, function(event){
+			event.stopPropagation();
+		});
+		formWrapper.appendChild(formInputText1);
+
+		var formInputText2 = document.createElement('input');
+		formInputText2.type = ('number');
+		formInputText2.placeholder = ('Enter your wager');
+		formInputText2.className = ('formInputText bottom');
+		formInputText2.id = ('wager');
+		formInputText2.addEventListener(clickEvent, function(event){
+			event.stopPropagation();
+		});
+		formWrapper.appendChild(formInputText2);
+
+		var formButton = document.createElement('div');
+		formButton.className = ('formButton');
+		formButton.id = ('submitChallenge');
+		formButton.innerHTML = 'Start the challenge!';
+		formButton.addEventListener(clickEvent, function(event){
+			console.log("yoyoyo!!");
+			event.stopPropagation();
+		});
+		formWrapper.appendChild(formButton);
+
+		showStopSign();	
+	}	
 }
 
 Game.prototype.createDomElements = function(){ //Game draw method
@@ -181,8 +308,12 @@ Game.prototype.createDomElements = function(){ //Game draw method
 		this.challengeButton = document.createElement('div');
 		this.challengeButton.className = "challengeButton";
 		this.challengeButton.style.backgroundImage = "url('"+this.challengeButtonBackground+"')";
-		this.challengeButton.style.opacity = this.Userpro?1:.5;
+		this.challengeButton.style.opacity = user.PRO?1:.5;
 		this.arcadeContent.appendChild(this.challengeButton);
+
+		this.challengeButton.addEventListener(clickEvent, {
+                                 handleEvent:this.challengeClick,                  
+                                 Game:this}, false);
 	}
 	
 	this.arcadeFrameB = document.createElement('div');
@@ -264,6 +395,12 @@ var Auction = function(val){ //Game object
 	this.leader = val.leader;
 	this.currentBid = val.currentBid;
 	this.image = "images/auctions/"+val.image;
+	this.clickthrough = val.clickthrough;
+	this.fbDiv = val.fbDiv;
+	this.fb = val.fb;
+	this.twitter = val.twitter;
+	this.secondsUntilStart = val.secondsUntilStart;
+	this.secondsRemaining = val.secondsRemaining;
 	this.inputVisible = false;
 	
 	this.li = document.createElement('li');
@@ -293,6 +430,8 @@ Auction.prototype.showBidInputs = function(){
 		that.currentBidDiv.style.display = "none";
 		that.auctionCoin.style.display = "none";
 
+		that.leaderInfoDiv.style.display = "none";
+
 		that.newBidButton = document.createElement('div');
 		that.newBidButton.className = "newBidButton";
 		that.newBidButton.innerHTML = "Place bid";
@@ -320,6 +459,8 @@ Auction.prototype.removeBidInputs = function(){
 
 	if(that.inputVisible === true){
 
+		that.leaderInfoDiv.style.display = "";
+
 		that.newBidInput.style.display = "none";
 		that.newBidButton.style.display = "none";
 		that.currentBidDiv.style.display = "";
@@ -330,6 +471,124 @@ Auction.prototype.removeBidInputs = function(){
 	}
 
 }
+
+Auction.prototype.styleClickthrough = function(){
+
+	var clickthroughHTML = "<a href='"+this.clickthrough+"' target='_blank'>Check them out online.</a>";
+	return clickthroughHTML;
+}
+
+Auction.prototype.styleFB = function(){
+
+	var likeBtn = '<div class="fb-like" data-href="'+this.fb+'" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>';
+	// FB.Event.subscribe('edge.create',
+	// 	function(response) {
+	// 		// alert('You liked the URL: ' + response);
+	// 		app.Data.trackFacebookLike(auctionID);
+	// 	}
+	// );
+	return likeBtn;
+}
+
+Auction.prototype.styleTwitter = function(){
+
+	var followBtn = twttr.widgets.createFollowButton(this.twitter,
+										this.twitterButtonDiv,
+										function (el) {
+											console.log("Follow button created."); //callback function
+										},
+										{size: 'medium', count: 'none'}
+										);
+	return followBtn;
+}
+
+Auction.prototype.styleLiveTimerDynamicProperties = function(){
+
+	var widthPercentage = ((1-(this.secondsRemaining/1800))*100).toFixed(1);
+	this.auctionTimerBlackout.style.width = widthPercentage+"%";
+
+	if(this.secondsRemaining!=0){
+		var timer = convertSecondsToTimer(this.secondsRemaining);
+		this.auctionTimerBlackout.innerHTML = "&nbsp"+timer;
+	}else{
+		this.auctionTimerBlackout.innerHTML = "This auction has ended.";
+		this.bidsDiv.innerHTML = "WINNER!";
+		this.bidsDiv.style.fontWeight = "bold";
+		this.bidsDiv.style.color = "red";
+	}
+
+}
+
+Auction.prototype.styleUpnextTimerDynamicProperties = function(){
+
+	if(this.secondsUntilStart!=0){
+		var timer = convertSecondsToTimer(this.secondsUntilStart);
+		this.upnextTimerDiv.innerHTML = "Starts in: "+timer;
+	}else{
+		this.upnextTimerDiv.innerHTML = "This auction is now Live!";
+		this.upnextTimerDiv.style.fontWeight = "bold";
+		this.upnextTimerDiv.style.color = "red";
+	}
+
+}
+
+function convertSecondsToTimer(seconds){
+	if(seconds<60){
+		if(seconds<10){
+			var timer = "0"+seconds;
+		}else{
+			var timer = seconds;
+		}
+		
+		return timer;
+	}else if(seconds<3600){
+		var minutes = Math.floor(seconds/60);
+		var remainingSeconds = seconds%(minutes*60);
+
+		if(remainingSeconds<10){
+			remainingSeconds = "0"+remainingSeconds;
+		}
+		
+		var timer = minutes+":"+remainingSeconds; 
+		
+		return timer;
+	}else if(seconds>=3600){
+		var hours = Math.floor(seconds/3600);
+		var remainingMinutes = Math.floor(seconds/60)%(hours*60);
+		if(remainingMinutes<10){
+			remainingMinutes = "0"+remainingMinutes;
+		}
+		var remainingSeconds = seconds%(hours*60*60+remainingMinutes*60);
+		if(remainingSeconds<10){
+			remainingSeconds = "0"+remainingSeconds;
+		}
+
+		var timer = hours+":"+remainingMinutes+":"+remainingSeconds; 
+
+		return timer;
+	}
+}
+
+var t=setInterval(updateAuctionTimers,1000);
+
+function updateAuctionTimers(){
+
+	$.each(auctionObjects, function(key, val){			
+	 	if(this.secondsRemaining>0 && this.bids>0){
+	 		this.secondsRemaining--;
+	 	}
+	 	if(currentPage===1 && currentAuctionScope===0){
+	 		this.styleLiveTimerDynamicProperties();
+	 	}
+	 	if(this.secondsUntilStart>0){
+	 		this.secondsUntilStart--;
+	 	}
+	 	if(currentPage===1 && currentAuctionScope===1){
+	 		this.styleUpnextTimerDynamicProperties();
+	 	}
+	});
+}
+
 
 Auction.prototype.createLiveAuction = function(){
 	
@@ -370,10 +629,40 @@ Auction.prototype.createLiveAuction = function(){
 	this.inactiveLI = document.createElement('li');
 	this.indicatorUL.appendChild(this.inactiveLI);
 
+	this.auctionTimerContainer = document.createElement('div');
+	this.auctionTimerContainer.className = "auctionTimerContainer";
+	$("#auctions .auctions").append(this.auctionTimerContainer);
+
+	this.auctionTimerWrapper = document.createElement('div');
+	this.auctionTimerWrapper.className = "auctionTimerWrapper";
+	this.auctionTimerContainer.appendChild(this.auctionTimerWrapper);
+
+	this.auctionTimerImage = document.createElement('div');
+	this.auctionTimerImage.className = "auctionTimerImage";
+	this.auctionTimerWrapper.appendChild(this.auctionTimerImage);
+
+	this.auctionTimerBlackout = document.createElement('div');
+	this.auctionTimerBlackout.className = "auctionTimerBlackout";
+	this.styleLiveTimerDynamicProperties();
+	this.auctionTimerWrapper.appendChild(this.auctionTimerBlackout);
+
+	this.auctionTitleContainerDiv = document.createElement('div');
+	this.auctionTitleContainerDiv.className = "auctionTitleContainer";
+	$("#auctions .auctions").append(this.auctionTitleContainerDiv);
+
 	this.auctionTitleWrapperDiv = document.createElement('div');
 	this.auctionTitleWrapperDiv.className = "auctionTitleWrapper";
-	this.auctionTitleWrapperDiv.innerHTML = "live: "+this.client+" - "+this.title;
-	$("#auctions .auctions").append(this.auctionTitleWrapperDiv);
+	this.auctionTitleContainerDiv.appendChild(this.auctionTitleWrapperDiv);
+
+	this.auctionClientDiv = document.createElement('div');
+	this.auctionClientDiv.className = "auctionClientDiv";
+	this.auctionClientDiv.innerHTML = this.client;
+	this.auctionTitleWrapperDiv.appendChild(this.auctionClientDiv);
+
+	this.auctionTitleDiv = document.createElement('div');
+	this.auctionTitleDiv.className = "auctionTitleDiv";
+	this.auctionTitleDiv.innerHTML = this.title;
+	this.auctionTitleWrapperDiv.appendChild(this.auctionTitleDiv);
 
 	this.auctionStatsWrapperDiv = document.createElement('div');
 	this.auctionStatsWrapperDiv.className = "auctionStatsWrapper";
@@ -435,12 +724,11 @@ Auction.prototype.createLiveAuction = function(){
                              Auction:this}, false);
 
 	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
-
 }
 
 Auction.prototype.createUpnextAuction = function(){
 	
-	$("#auctions .auctions").append(this.li);
+$("#auctions .auctions").append(this.li);
 
 	this.scrollerDiv = document.createElement('div');
 	this.scrollerDiv.id = "scroller";
@@ -463,8 +751,64 @@ Auction.prototype.createUpnextAuction = function(){
 
 	this.auctionContent = document.createElement('div');
 	this.auctionContent.className = "auctionContent";
-	this.auctionContent.innerHTML = "--The Deets Go Here--";
 	this.auctionFrameDivB.appendChild(this.auctionContent);
+
+	if(this.clickthrough == "---" && this.fb == "---" && this.twitter == "---"){
+		this.bonusTitleDiv = document.createElement('div');
+		this.bonusTitleDiv.className = "bonusTitle";
+		this.bonusTitleDiv.innerHTML = "Sorry, no bonus gratii available here. Check other auctions.";
+		this.auctionContent.appendChild(this.bonusTitleDiv);
+	}else{
+		this.bonusTitleDiv = document.createElement('div');
+		this.bonusTitleDiv.className = "bonusTitle";
+		this.bonusTitleDiv.innerHTML = "Free bonus gratii from "+this.client+"!";
+		this.auctionContent.appendChild(this.bonusTitleDiv);
+
+		if(this.clickthrough != "---"){
+			this.clickthroughATag = document.createElement('a');
+			this.clickthroughATag.href = this.clickthrough;
+			this.clickthroughATag.target = "_blank";
+			this.auctionContent.appendChild(this.clickthroughATag); 
+
+			this.clickthroughWrapperDiv = document.createElement('div');
+			this.clickthroughWrapperDiv.className = "clickthroughWrapper";
+			this.clickthroughWrapperDiv.innerHTML = "Check them out online";
+			this.clickthroughATag.appendChild(this.clickthroughWrapperDiv); 
+		}
+
+		if(this.twitter != "---"){
+			this.twitterWrapperDiv = document.createElement('div');
+			this.twitterWrapperDiv.className = "twitterWrapper";
+			this.auctionContent.appendChild(this.twitterWrapperDiv); 
+
+			this.twitterTitleDiv = document.createElement('div');
+			this.twitterTitleDiv.className = "twitterTitle";
+			this.twitterTitleDiv.innerHTML = "Follow them on twitter";
+			this.twitterWrapperDiv.appendChild(this.twitterTitleDiv);
+
+			this.twitterButtonDiv = document.createElement('div');
+			this.twitterButtonDiv.className = "twitterButton";
+			this.styleTwitter();
+			this.twitterWrapperDiv.appendChild(this.twitterButtonDiv);
+		}
+
+		if(this.fb != "---"){
+			this.fbWrapperDiv = document.createElement('div');
+			this.fbWrapperDiv.className = "fbWrapper";
+			this.auctionContent.appendChild(this.fbWrapperDiv); 
+
+			this.fbTitleDiv = document.createElement('div');
+			this.fbTitleDiv.className = "fbTitle";
+			this.fbTitleDiv.innerHTML = "Like them on Facebook";
+			this.fbWrapperDiv.appendChild(this.fbTitleDiv);
+
+			this.fbButtonDiv = document.createElement('div');
+			this.fbButtonDiv.id = "fbButton";
+			this.fbButtonDiv.className = "fbButton";
+			this.fbButtonDiv.innerHTML = this.styleFB();
+			this.fbWrapperDiv.appendChild(this.fbButtonDiv);
+		}
+	}
 
 	this.indicatorUL = document.createElement('ul');
 	this.indicatorUL.id = "indicator";
@@ -477,14 +821,51 @@ Auction.prototype.createUpnextAuction = function(){
 	this.inactiveLI = document.createElement('li');
 	this.indicatorUL.appendChild(this.inactiveLI);
 
+	this.auctionTimerContainer = document.createElement('div');
+	this.auctionTimerContainer.className = "auctionTimerContainer";
+	$("#auctions .auctions").append(this.auctionTimerContainer);
+
+	this.auctionTimerWrapper = document.createElement('div');
+	this.auctionTimerWrapper.className = "auctionTimerWrapper";
+	this.auctionTimerContainer.appendChild(this.auctionTimerWrapper);
+
+	this.upnextTimerDiv = document.createElement('div');
+	this.upnextTimerDiv.className = "upnextTimer";
+	this.styleUpnextTimerDynamicProperties();
+	this.auctionTimerWrapper.appendChild(this.upnextTimerDiv);
+
+	this.auctionTitleContainerDiv = document.createElement('div');
+	this.auctionTitleContainerDiv.className = "auctionTitleContainer";
+	$("#auctions .auctions").append(this.auctionTitleContainerDiv);
+
 	this.auctionTitleWrapperDiv = document.createElement('div');
 	this.auctionTitleWrapperDiv.className = "auctionTitleWrapper";
-	this.auctionTitleWrapperDiv.innerHTML = "upnext: "+this.client+" - "+this.title;
-	$("#auctions .auctions").append(this.auctionTitleWrapperDiv);
+	this.auctionTitleContainerDiv.appendChild(this.auctionTitleWrapperDiv);
+
+	this.auctionClientDiv = document.createElement('div');
+	this.auctionClientDiv.className = "auctionClientDiv";
+	this.auctionClientDiv.innerHTML = this.client;
+	this.auctionTitleWrapperDiv.appendChild(this.auctionClientDiv);
+
+	this.auctionTitleDiv = document.createElement('div');
+	this.auctionTitleDiv.className = "auctionTitleDiv";
+	this.auctionTitleDiv.innerHTML = this.title;
+	this.auctionTitleWrapperDiv.appendChild(this.auctionTitleDiv);
 
 	this.auctionStatsWrapperDiv = document.createElement('div');
 	this.auctionStatsWrapperDiv.className = "auctionStatsWrapper";
 	$("#auctions .auctions").append(this.auctionStatsWrapperDiv);
+
+	this.auctionStatsContent = document.createElement('div');
+	this.auctionStatsContent.className = "auctionStatsContent";
+	this.auctionStatsWrapperDiv.appendChild(this.auctionStatsContent);
+
+	this.bonusMessageDiv = document.createElement('div');
+	this.bonusMessageDiv.className = "bonusMessage";
+	this.bonusMessageDiv.innerHTML = "Psst.. check above for free bonus gratii from "+this.client+"!";
+	this.auctionStatsContent.appendChild(this.bonusMessageDiv);
+
+
 
 	initializeHorizontaliScroll('auctionSnapWrapper_'+this.id);
 
@@ -567,6 +948,7 @@ var Message = function(val){ //Game object
 	this.type = val.type;
 	this.text = val.text;
 	this.opened = val.opened;
+	this.gratii = val.gratii;
 
 	this.li = document.createElement('li');
 	this.li.className = "messageLI vSnapToHere";
@@ -578,8 +960,18 @@ var Message = function(val){ //Game object
 
 Message.prototype.openMessage = function(event)
 { 
-	alert(this.Message.title);
-    this.Message.div.style.backgroundImage = "url('images/boxingButton.png')";
+	if(this.Message.opened===0){
+		alert(this.Message.title);
+	    this.Message.div.style.backgroundImage = "url('images/boxingButton.png')";
+	    user.newMessages--;
+	    this.Message.opened = 1;
+	    if(user.newMessages>0){
+			$(".newMessageIndicator").html(user.newMessages);	
+		}else{
+			$(".newMessageIndicator").hide();
+		}
+		user.changeGratii(this.Message.gratii);
+	}
 }
 
 Message.prototype.createUnopenedMessage = function(){
@@ -589,7 +981,7 @@ Message.prototype.createUnopenedMessage = function(){
 	this.div = document.createElement('div');
 	this.div.className = "messageImage new";
 	this.div.style.height = $(window).width()*.5;
-	this.div.addEventListener("click", {
+	this.div.addEventListener(clickEvent, {
                                  handleEvent:this.openMessage,                  
                                  Message:this}, false);
 	
@@ -599,7 +991,14 @@ Message.prototype.createUnopenedMessage = function(){
 
 Message.prototype.createDomElements = function(){
 	if(this.opened===0){
+		user.newMessages++;
 		this.createUnopenedMessage();
+		
+		if(user.newMessages>0){
+			$(".newMessageIndicator").html(user.newMessages);
+			$(".newMessageIndicator").show();
+		}
+
 	}
 }
 // end of INBOX-------------------------
@@ -677,6 +1076,9 @@ function createDomElementsFromObjects(dataRequested){
 			auctionObjects[i].createDomElements();
 		}
 		initializeVerticaliScroll(1, ".vSnapToHere");
+		if(currentAuctionScope===1){
+			FB.XFBML.parse(document.getElementById('auction'));
+		}
 
 	}else if(dataRequested==="inbox"){
 		
@@ -697,36 +1099,75 @@ function createDomElementsFromObjects(dataRequested){
 	console.log("DOM elements appended: "+dataRequested+"#");
 }
 
+$(".gratiiLogo").click(function(){
+	FB.XFBML.parse(document.getElementById('auction'));
+	//alert("hi");
+});
+
 function createObjects(dataRequested, data){
 
 	console.log("Creating objects: "+dataRequested+"...");
-	if(dataRequested==="arcade"){
+	if(dataRequested==="session"){
+
+		$.each(data, function(key, val){			
+			if(val.session===true){
+				console.log(val.session+" XXXXXXXXXXXXXXXX");
+				getData("profile");
+			}else{
+				val = {
+					"id": "0", 
+					"email": "demo@gratii.com",
+					"username":"demo",
+					"month":"6",
+					"date":"17",
+					"year":"1988",
+					"gender":"m",
+					"gratii":"0",
+					"PRO":0
+				};
+				user = new User(val);
+			}
+		});
+		user.completeProfile();
+		
+	
+	}else if(dataRequested==="profile"){
+
+		$.each(data, function(key, val){			
+			user = new User(val);
+		});
+		user.completeProfile();
+
+	}else if(dataRequested==="arcade"){
 	
 		$.each(data, function(key, val){			
 			new Game(val);
 		});
-		createDomElementsFromObjects(dataRequested)
+		
+		createDomElementsFromObjects(dataRequested);
 	
 	}else if(dataRequested==="auctions"){
 		
 		$.each(data, function(key, val){			
 			new Auction(val);
 		});
-		createDomElementsFromObjects(dataRequested)
+		
+		createDomElementsFromObjects(dataRequested);
 	
 	}else if(dataRequested==="inbox"){
 	
 		$.each(data, function(key, val){			
 			new Message(val);
 		});
-		createDomElementsFromObjects(dataRequested)
+		
+		createDomElementsFromObjects(dataRequested);
 	
 	}else if(dataRequested==="transactions"){
 	
 		$.each(data, function(key, val){			
 			new Transaction(val);
 		});
-		createDomElementsFromObjects(dataRequested)
+		createDomElementsFromObjects(dataRequested);
 	
 	}
 
@@ -735,7 +1176,43 @@ function createObjects(dataRequested, data){
 function getData(dataRequested){
 	console.log("Getting data: "+dataRequested+"...");
 
-	if(dataRequested==="arcade"){
+	if(dataRequested==="session"){
+
+		$.ajax({
+	        url: 'js/session.json',
+	        type: 'GET',
+	        async: false,
+	        cache: false,
+	        timeout: 30000,
+	        error: function(){
+	        	console.log("Error getting data: "+dataRequested+"#");
+	            return true;
+	        },
+	        success: function(data){ 
+	            console.log("Data gotten: "+dataRequested+"#");
+	            createObjects(dataRequested, data);
+	        }
+	    });
+
+	}else if(dataRequested==="profile"){
+
+		$.ajax({
+	        url: 'js/profile.json',
+	        type: 'GET',
+	        async: false,
+	        cache: false,
+	        timeout: 30000,
+	        error: function(){
+	        	console.log("Error getting data: "+dataRequested+"#");
+	            return true;
+	        },
+	        success: function(data){ 
+	            console.log("Data gotten: "+dataRequested+"#");
+	            createObjects(dataRequested, data);
+	        }
+	    });
+
+	}else if(dataRequested==="arcade"){
 
 		gameObjects = []; 
 		$.ajax({
@@ -869,7 +1346,7 @@ $(".navItem").on(clickEvent, function(){ //Mobile touch on navItem
 		console.log('Already on this page');
 		return;
 	}
-	
+
 	changePage(selectedPage);
 
 });
@@ -1046,6 +1523,7 @@ function showStopSign(){
 
 function hideStopSign(){
 	$(".stopSignWrapper").animate({bottom:"-300px"}, 500, function(){
+		$(".stopSignWrapper").html('');
 		$(".stopSignWrapper").hide();
 	});
 	

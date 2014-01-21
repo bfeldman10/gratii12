@@ -6,7 +6,8 @@
 		"image":"gratii-bracelet.jpg",
 		"text":"blah blah blha basdf blhac",
 		"type":"default",
-		"opened":0
+		"opened":0,
+		"gratii":0
 	},
 	{
 		"id": "2", 
@@ -15,7 +16,8 @@
 		"image":"plunder.jpg",
 		"text":"blah blah blha basdf blhac",
 		"type":"default",
-		"opened":0
+		"opened":0,
+		"gratii":1
 	},
 	{
 		"id": "3", 
@@ -24,7 +26,8 @@
 		"image":"route.jpg",
 		"text":"blah blah blha basdf blhac",
 		"type":"default",
-		"opened":0
+		"opened":0,
+		"gratii":2
 	},
 	{
 		"id": "4", 
@@ -33,7 +36,8 @@
 		"image":"vaperfy.jpg",
 		"text":"blah blah blha basdf blhac",
 		"type":"default",
-		"opened":0
+		"opened":0,
+		"gratii":3
 	},
 	{
 		"id": "5", 
@@ -42,7 +46,8 @@
 		"image":"gratii-tee.jpg",
 		"text":"blah blah blha basdf blhac",
 		"type":"default",
-		"opened":0
+		"opened":0,
+		"gratii":4
 	},
 	{
 		"id": "2", 
@@ -51,7 +56,8 @@
 		"image":"plunder.jpg",
 		"text":"blah blah blha basdf blhac",
 		"type":"default",
-		"opened":0
+		"opened":0,
+		"gratii":5
 	},
 	{
 		"id": "3", 
@@ -60,7 +66,8 @@
 		"image":"route.jpg",
 		"text":"blah blah blha basdf blhac",
 		"type":"default",
-		"opened":0
+		"opened":0,
+		"gratii":6
 	},
 	{
 		"id": "4", 
@@ -69,7 +76,8 @@
 		"image":"vaperfy.jpg",
 		"text":"blah blah blha basdf blhac",
 		"type":"default",
-		"opened":0
+		"opened":0,
+		"gratii":8
 	},
 	{
 		"id": "5", 
@@ -78,6 +86,7 @@
 		"image":"gratii-tee.jpg",
 		"text":"blah blah blha basdf blhac",
 		"type":"default",
-		"opened":0
+		"opened":0,
+		"gratii":7
 	}
 ]

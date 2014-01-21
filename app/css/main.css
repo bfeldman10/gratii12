@@ -15,7 +15,6 @@ html, body{
 	position: relative;
 	overflow: hidden;
 	background-color: white;
-	min-height: ;
 	-webkit-user-select: none; /* webkit (safari, chrome) browsers */
     -moz-user-select: none; /* mozilla browsers */
     -khtml-user-select: none; /* webkit (konqueror) browsers */
@@ -254,7 +253,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 
 /*-------start STOP SIGN------------*/
 .stopSignWrapper{
-	position: fixed;
+	position: absolute;
 	display: none;
 	height: 300px;
 	width: 100%;
@@ -267,6 +266,214 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 	background-color: rgba(255, 255, 255, .9);
 	z-index: 4;
 }
+
+.stopSignTitle{
+	width:100%;
+	text-align: center;
+	font-size: 28px;
+	color: black;
+	font-family: "boostsskregular";
+	margin-top: 5px;
+}
+
+.stopSignSubTitle{
+	width:100%;
+	text-align: center;
+	font-size: 14px;
+	color: black;
+	font-family: "Trebuchet MS";
+}
+
+.formWrapper{
+	position: relative;
+	width: 90%;
+	margin: 10px auto;
+}
+
+.top{
+	border: 1px solid blue;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.middle{
+	border: 1px solid blue;
+	border-top: 0px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.bottom{
+	border: 1px solid blue;
+	border-top: 0px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+.formDiv{
+	position: relative;
+	width: 90%;
+	margin: 0px auto;
+	text-align: center;
+	font-size: 26px;
+	height: 40px;
+	line-height: 40px;
+	color: blue;
+	font-family: "Trebuchet MS";
+}
+
+.formInputText{
+	-webkit-appearance: none;
+	position: relative;
+	width: 90%;
+	margin: 0px auto;
+	display: block;
+	text-align: left;
+	height: 40px;
+	font-family: "Trebuchet MS";
+	font-size: 22px;
+	color: blue;
+	padding-left: 5px;
+}
+
+.formButton{
+	position: relative;
+	width: 90%;
+	margin: 10px auto;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	font-family: "boostsskregular";
+	font-size: 24px;
+	color: blue;
+	border: 1px solid blue;
+	border-radius: 4px;
+}
+
+.formButton:active{
+	background-color: lightgreen;
+}
+/*
+#arcade .challengeContainer{
+	position: fixed;
+	top:70px;
+	width: 100%;
+	z-index: 4;
+	display: none;
+	border: 1px solid red;
+	margin-right: -10px;
+}
+
+#arcade .challengeWrapper{
+	position: relative;
+	width: 95%;
+	margin: 0px auto;
+	border: 1px solid red;
+}
+
+#arcade .formSection{
+	position: relative;
+	width: 90%;
+	margin: 0px auto;
+	padding: 5px;
+	background-color: white;
+	border: 1px solid grey;
+}
+
+#arcade .gameWrapper{
+	position: relative;
+	height: 30px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom: 0px;
+}
+
+#arcade .challengeeWrapper{
+	position: relative;
+	height: 30px;
+}
+
+#arcade .wagerWrapper{
+	position: relative;
+	height: 30px;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-top: 0px;
+}
+
+#arcade .formPreText{
+	position: relative;
+	text-align: left;
+	color:blue;
+	font-family: 'boostsskregular';
+	float: left;
+	font-size: 22px;
+	line-height: 30px;
+}
+
+#arcade .formInputText{
+	position: relative;
+	font-family: "Trebuchet MS";
+	font-size: 18px;
+	line-height: 30px;
+	height: 30px;
+	float: left;
+	border: 1px solid red;
+}
+
+#arcade .formInputText#game{
+	width:70%;
+	margin-left: 5px;
+	float: left;
+}
+
+#arcade .formInputText#challengee{
+	width:50%;
+	margin-left: 5px;
+	float: left;
+}
+
+#arcade .formInputText#wager{
+	width:50%;
+	margin-left: 5px;
+	float: left;
+}
+
+#arcade .sendButton{
+	height: 30px;
+	border: 1px solid blue;
+	border-radius: 4px;
+	text-align: center;
+	font-family: 'boostsskregular';
+	font-size: 24px;
+	color: blue;
+	margin-top: 5px;
+}
+
+#arcade .sendButton:active{
+	background-color: lightgreen;
+}
+
+#arcade .cancelButton{
+	height: 20px;
+	border: 1px solid blue;
+	border-radius: 4px;
+	text-align: center;
+	font-family: 'boostsskregular';
+	font-size: 18px;
+	color: blue;
+	margin-top: 5px;
+}
+
+#arcade .cancelButton:active{
+	background-color: lightgreen;
+}*/
 /*-------end STOP SIGN------------*/
 
 
@@ -289,7 +496,6 @@ background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 
 background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* IE10+ */
 background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
-
 }
 
 .gratiiLogo{
@@ -351,6 +557,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	width: 25%;
 	height: 100%;
 	float: left;
+	overflow: hidden;
 }
 
 .pageListWrapper{
@@ -517,7 +724,8 @@ td{
 	width: 100%;
 	height: 40px;
 	background-color: #efefef;
-	z-index: 9;
+	z-index: 3;
+	box-shadow: 0 4px 6px -4px black;
 	opacity: 1;
 }
 
@@ -612,19 +820,93 @@ td{
 	height: 100%;
 	max-width: 800px;
 	margin:0px auto;
-	background-color: yellow;
+	background-color: #efefef;
+	text-align: center;
+	font-family: 'boostsskregular';
+	font-size: 16px;
+}
+
+.auctionTimerContainer{
+	position: relative;
+	margin: 0px auto;
+	width: 100%;
+	height: 10px;
+	background-color: black;
+}
+
+.auctionTimerWrapper{
+	position: relative;
+	margin: 0px auto;
+	width: 100%;
+	max-width: 800px;
+	height: 10px;
+	background-color: #1c1c1c;
+}
+
+.auctionTimerImage{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-image: url('../images/timerGradientRed.png');
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-color: black;
+}
+
+.auctionTimerBlackout{
+	position: absolute;
+	height: 100%;
+	background-color: #1c1c1c;
+	top: 0;
+	right: 0;
+	color: white;
+	line-height: 10px;
+	font-family: "Trebuchet MS";
+	font-size: 12px;
+	text-align: left;
+}
+
+.auctionTitleContainer{
+	position: relative;
+	width: 100%;	
+	height:30px;
+	background-color: black;
 }
 
 .auctionTitleWrapper{
 	position: relative;
+	margin: 0px auto;
 	width: 100%;
+	max-width: 800px;
 	height:30px;
 	background-color: black;
+}
+
+.auctionClientDiv{
+	position: absolute;
+	top:0px;
+	width: 100%;
+	text-align: left;
 	color: white;
-	font-size: 20px;
-	font-family: 'boostsskregular';
+	font-size: 18px;
+	font-family: 'Trebuchet MS';
+	font-weight: bold;
 	line-height: 30px;
-	text-align: center;
+	text-align: left;
+	float: left;
+	left: 3px;
+}
+
+.auctionTitleDiv{
+	position: absolute;
+	top:0px;
+	width: 100%;
+	text-align: right;
+	color: white;
+	font-size: 14px;
+	font-family: 'Trebuchet MS';
+	line-height: 30px;
+	right: 3px;
 }
 
 .auctionStatsWrapper{
@@ -634,7 +916,7 @@ td{
 	background-color: #efefef;
 	color: white;
 	border-bottom: 1px solid white;
-	box-shadow: 0px 3px 3px grey;
+	box-shadow: 0 4px 4px -3px black;
 	margin-bottom: 10px;
 }
 
@@ -657,7 +939,6 @@ td{
 	font-family: 'Trebuchet MS';
 	font-size: 12px;
 	margin-bottom: 2px;
-	border: 1px sold red;
 }
 
 .leader{
@@ -666,7 +947,6 @@ td{
 	font-family: 'Trebuchet MS';
 	font-size: 18px;
 	font-weight: bold;
-	border: 1px sold red;
 }
 
 .bidInfoWrapper{
@@ -733,6 +1013,68 @@ td{
 	float: right;
 	display: inline-block;
 }
+
+.upnextTimer{
+	line-height: 10px;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: 'Trebuchet MS';
+	color: white;
+}
+
+.bonusMessage{
+	width: 80%;
+	margin: 0px auto;
+	text-align: left;
+	line-height: 20px;
+	font-size: 14px;
+	font-family: 'boostsskregular';
+	color: black;
+}
+
+.bonusTitle{
+	width: 90%;
+	margin: 0px auto;
+	text-align: center;
+	font-size: 18px;
+	font-family: 'boostsskregular';
+	text-decoration: underline;
+	color: black;
+}
+
+.clickthroughWrapper{
+	position: relative;
+	margin: 5px auto;
+	width: 80%;
+	height: 26px;
+	line-height: 26px;
+	font-family: 'boostsskregular';
+	font-size: 16px;
+	text-decoration: none;
+	color: blue;
+	border: 1px solid blue;
+	border-radius: 4px;
+}
+
+.clickthroughWrapper:active{
+	background-color: lightgreen;
+}
+
+.fbWrapper{
+	position: relative;
+	width: 50%;
+	height: 70px;
+	float: left;
+}
+
+.twitterWrapper{
+	position: relative;
+	width: 50%;
+	height: 70px;
+	float: left;
+}
+
 /*---------END Auctions-----------*/
 
 
@@ -841,12 +1183,14 @@ td{
 	width:80%;
 	margin-left: 5px;
 	float: left;
+	border: none;
 }
 
 #inbox .formInputText#gift{
 	width:70%;
 	margin-left: 5px;
 	float: left;
+	border: none;
 }
 
 #inbox .formInputText#textMessage{
@@ -887,7 +1231,6 @@ td{
 }*/
 
 .settings{
-	background-color: ;
 	width: 100%;
 }
 
@@ -897,7 +1240,6 @@ td{
 	width: 90%;
 	border: 1px solid #efefef;
 	border-radius: 4px;
-	background-color: none;
 	top: 10px;
 	font-family: "Trebuchet MS";
 	color: blue;
@@ -1007,6 +1349,10 @@ td{
 #profile .settings .avatar:active{
 	background-color: lightgreen;
 }
+
+/*#profile .saveProfile{
+
+}*/
 
 .transactions{
 	width: 100%;
@@ -1139,6 +1485,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', end
 	background-image: url('../images/Flaticon/dollar48.png');
 	background-size: 42px 30px;
 	background-repeat: no-repeat;
+}
+
+.newMessageIndicator{
+	position: relative;
+	width: 18px;
+	height: 18px;
+	background-color: red;
+	border-radius: 50%;
+	float: right;
+	display: none;
+	font-family: "Trebuchet MS";
+	font-size: 13px;
+	color: white;
+	text-align: center;
+	line-height: 18px;
 }
 
 .navIcon#profile{
