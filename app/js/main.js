@@ -282,7 +282,6 @@ Game.prototype.challengeClick = function(event){
 		formButton.id = ('submitChallenge');
 		formButton.innerHTML = 'Start the challenge!';
 		formButton.addEventListener(clickEvent, function(event){
-			console.log("yoyoyo!!");
 			event.stopPropagation();
 		});
 		formWrapper.appendChild(formButton);
@@ -493,7 +492,7 @@ Auction.prototype.styleLiveAuctionStats = function(viaNode){
 	this.currentBidDiv.innerHTML = this.currentBid;
 	this.bidInfoDiv.appendChild(this.currentBidDiv);
 
-	this.bidInfoDiv.addEventListener(clickEvent, {
+	this.bidInfoDiv.addEventListener('click', {
                              handleEvent:this.showBidInputs,                  
                              Auction:this}, false);
 
@@ -507,8 +506,8 @@ Auction.prototype.styleLiveAuctionStats = function(viaNode){
 	
 }
 
-Auction.prototype.placeBidClick = function(){
-
+Auction.prototype.placeBidClick = function(event){
+	event.stopPropagation();
 	if(loggedIn===false){
 		showStopSign("anonPlaceBid");
 	}
@@ -540,10 +539,15 @@ Auction.prototype.showBidInputs = function(){
 		that.bidInfoDiv.appendChild(that.newBidInput);
 
 		that.inputVisible = true;
-
-		that.newBidButton.addEventListener(clickEvent, {
+		that.newBidButton.addEventListener('click', {
                              handleEvent:that.placeBidClick,                  
                              Auction:that}, false);
+		that.newBidButton.addEventListener('touchstart', function(event){
+			event.stopPropagation();
+		});
+		that.newBidButton.addEventListener('click', function(event){
+			event.stopPropagation();
+		});
 
 
 	}
@@ -1067,7 +1071,7 @@ var Message = function(val){ //Game object
 Message.prototype.openMessage = function(event)
 { 
 	if(this.Message.opened===0){
-		alert(this.Message.title);
+		alert("Message open alert test: "+this.Message.title);
 	    this.Message.div.style.backgroundImage = "url('images/boxingButton.png')";
 	    user.newMessages--;
 	    this.Message.opened = 1;
@@ -1087,7 +1091,7 @@ Message.prototype.createUnopenedMessage = function(){
 	this.div = document.createElement('div');
 	this.div.className = "messageImage new";
 	this.div.style.height = $(window).width()*.5;
-	this.div.addEventListener(clickEvent, {
+	this.div.addEventListener('click', {
                                  handleEvent:this.openMessage,                  
                                  Message:this}, false);
 	
