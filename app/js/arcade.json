@@ -105,6 +105,7 @@
 		"image":"msc.png",
 		"myHighScore":"102",
 		"myTotalGratii":"102",
+		"challengeable":"1",
 		"topTen":[
 			{
 			"username":"bfeldman",

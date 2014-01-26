@@ -42,7 +42,7 @@ $(window).resize(function() {
 });
 
 $(document).ready(function(){
-
+	document.addEventListener("touchstart", function(){}, true);
 	$(".homeScreenLogo").css({"height":($(window).width()*.5)});
 	getData("session");
 	getData("arcade");
@@ -71,7 +71,8 @@ function hideFunctions(){
 		$(".homeScreen").hide();
 	});
 
-	$("body").on(clickEvent, function(){
+	$("#dimmer").on(clickEvent, function(){
+		event.stopPropagation();
 		if(stopSignVisible===true){
 			hideStopSign();
 		}
@@ -101,8 +102,17 @@ function hideFunctions(){
 
 	$(".whatFor").on(clickEvent, function(){
 		alert("Knowing the demographics of our fans helps us get better prizes for you. Also, certain prizes offered on Gratii have age restrictions. We will never share your personally identified information with any third party. Period.");
-	})
-	
+	});
+
+	$(".scopeButton").on(clickEvent, function(){
+		if(stopSignVisible===true){
+			hideStopSign();
+		}
+	});
+
+	$("#gameiFrame").on(clickEvent, function(event){
+		event.stopPropagation();
+	});
 	
 }
 // END home screen------------------------
@@ -149,8 +159,12 @@ function initializeHorizontaliScroll(wrapperID){
 			document.querySelector('#'+wrapperID+' #indicator > li.active').className = '';
 			document.querySelector('#'+wrapperID+' #indicator > li:nth-child(' + (this.currPageX+1) + ')').className = 'active';
 		}
+
 	});
+
 }
+
+
 // End iScroll Functions-------------------------------
 
 
@@ -167,7 +181,11 @@ var User = function(val){ //Game object
 	this.gender = val.gender;
 	this.PRO = val.PRO;
 	this.gratii = val.gratii;
-	this.newMessages = 0;	
+	this.newMessages = 0;
+	this.gameInProgressID = 0;
+	this.challengeIssueInProgress = false;
+	this.challengeIssueInProgress = false;
+	this.arcadeEvents = [];	
 }
 
 User.prototype.completeProfile = function(){
@@ -243,51 +261,33 @@ Game.prototype.challengeClick = function(event){
 		
 	event.stopPropagation();
 	if(stopSignVisible===false){
-		var stopSignTitle = document.createElement('div');
-		stopSignTitle.className = "stopSignTitle";
-		stopSignTitle.innerHTML = "Create a Challenge: "+this.Game.title;
-		$(".stopSignWrapper").append(stopSignTitle);
-
-		var stopSignSubTitle = document.createElement('div');
-		stopSignSubTitle.className = "stopSignSubTitle";
-		stopSignSubTitle.innerHTML = "<b>Rules:</b> Enter your oppenent's name.</br>Enter how much gratii you want to wager.</br>Try to get the highest score you can.</br>No do-overs. Winner takes all!";
-		$(".stopSignWrapper").append(stopSignSubTitle);
-
-		var formWrapper = document.createElement('div');
-		formWrapper.className = ('formWrapper');
-		$(".stopSignWrapper").append(formWrapper);
-
-		var formInputText1 = document.createElement('input');
-		formInputText1.type = ('text');
-		formInputText1.placeholder = ('Opponent\'s username');
-		formInputText1.className = ('formInputText top');
-		formInputText1.id = ('challengee');
-		formInputText1.addEventListener(clickEvent, function(event){
-			event.stopPropagation();
-		});
-		formWrapper.appendChild(formInputText1);
-
-		var formInputText2 = document.createElement('input');
-		formInputText2.type = ('number');
-		formInputText2.placeholder = ('Enter your wager');
-		formInputText2.className = ('formInputText bottom');
-		formInputText2.id = ('wager');
-		formInputText2.addEventListener(clickEvent, function(event){
-			event.stopPropagation();
-		});
-		formWrapper.appendChild(formInputText2);
-
-		var formButton = document.createElement('div');
-		formButton.className = ('formButton');
-		formButton.id = ('submitChallenge');
-		formButton.innerHTML = 'Start the challenge!';
-		formButton.addEventListener(clickEvent, function(event){
-			event.stopPropagation();
-		});
-		formWrapper.appendChild(formButton);
-
-		showStopSign();	
+		triggerChallengePanel(this.Game.id, this.Game.title);
 	}	
+}
+
+Game.prototype.playGame = function(event){
+	
+	if(stopSignVisible===false){
+		$(".mainApp").hide();
+		$(".footer").hide();
+		$("#gameiFrame").attr('src','games/'+this.Game.id+'/index.html?v=4');
+		$("#gameiFrame").show();
+		$(".gratiiLogo#header").css({backgroundImage:"url(images/backArrow.png)", width:"35px", height:"35px", backgroundSize:"35px 35px"});
+		$(".gratiiLogo#header").click(function(){
+			closeGameiFrame();
+		});
+		user.gameInProgressID = this.Game.id;
+	}
+                                
+}
+
+function closeGameiFrame(){
+	$("#gameiFrame").attr('src','');
+	$("#gameiFrame").hide();
+	$(".mainApp").show();
+	$(".footer").show();
+	$(".gratiiLogo#header").css({backgroundImage:"url(images/gratiiColorShadow.png)", width:"99px", height:"30px", backgroundSize:"99px 30px"});
+	
 }
 
 Game.prototype.createDomElements = function(){ //Game draw method
@@ -315,11 +315,15 @@ Game.prototype.createDomElements = function(){ //Game draw method
 		this.challengeButton.style.opacity = user.PRO?1:.5;
 		this.arcadeContent.appendChild(this.challengeButton);
 
-		this.challengeButton.addEventListener(clickEvent, {
+		this.challengeButton.addEventListener('click', {
                                  handleEvent:this.challengeClick,                  
                                  Game:this}, false);
 	}
 	
+	this.arcadeFrameA.addEventListener('click', {
+                                 handleEvent:this.playGame,                  
+                                 Game:this}, false);
+
 	this.arcadeFrameB = document.createElement('div');
 	this.arcadeFrameB.className = "arcadeFrame";
 	this.arcadeFrameB.id = "b";
@@ -351,14 +355,22 @@ Game.prototype.createDomElements = function(){ //Game draw method
 		
 		this.row = document.createElement('tr');
 		this.top10Table.appendChild(this.row);
-
 		this.td = document.createElement('td');
+		this.td.id = this.topTen[i].username;
 		this.td.innerHTML = this.topTen[i].username+': '+this.topTen[i].score;
 		this.row.appendChild(this.td);
+		this.td.addEventListener('click', function(event){
+			triggerUserInteractionPanel(this.id, this.id);
+		});
 
 		this.td = document.createElement('td');
+		this.td.className = 'username';
+		this.td.id = this.topTen[i+5].username;
 		this.td.innerHTML = this.topTen[i+5].username+': '+this.topTen[i+5].score;
 		this.row.appendChild(this.td);
+		this.td.addEventListener('click', function(event){
+			triggerUserInteractionPanel(this.id, this.id);
+		});
 
 	}
 
@@ -466,12 +478,21 @@ Auction.prototype.styleLiveAuctionStats = function(viaNode){
 		this.bidsDiv.innerHTML = "No bids yet. Be the first!";
 	}
 	this.leaderInfoDiv.appendChild(this.bidsDiv);
-	console.log(this.bids);
+
 	this.leaderDiv = document.createElement('div');
 	this.leaderDiv.className = "leader";
+	this.leaderDiv.id = this.leader;
 	if(this.bids > 0){
 		this.leaderDiv.style.color = "black";
 		this.leaderDiv.innerHTML = this.leader;
+		this.leaderDiv.addEventListener(clickEvent, function(event){
+			if(clickEvent!='click'){
+				$(this).trigger('click');
+			}
+			event.stopPropagation();
+			event.preventDefault();
+			triggerUserInteractionPanel(this.innerHTML, this.id);
+		});
 	}else{
 		this.leaderDiv.style.color = "grey";
 		this.leaderDiv.innerHTML = "Tap the coin to bid -->";
@@ -1013,8 +1034,17 @@ Auction.prototype.createPastAuction = function(){
 
 	this.leaderDiv = document.createElement('div');
 	this.leaderDiv.className = "leader";
+	this.leaderDiv.id = this.leader;
 	this.leaderDiv.style.color = "black";
 	this.leaderDiv.innerHTML = this.leader;
+	this.leaderDiv.addEventListener(clickEvent, function(event){
+		if(clickEvent!='click'){
+			$(this).trigger('click');
+		}
+		event.stopPropagation();
+		event.preventDefault();
+		triggerUserInteractionPanel(this.innerHTML, this.id);
+	});
 	this.leaderInfoDiv.appendChild(this.leaderDiv);
 	
 	this.bidInfoDiv = document.createElement('div');
@@ -1451,6 +1481,11 @@ function changePage(selectedPage){
 
 $(".navItem").on(clickEvent, function(){ //Mobile touch on navItem
 	var selectedPage = $(this).index();
+
+	if(stopSignVisible===true){
+		hideStopSign();
+	}
+
 	if(selectedPage===currentPage){
 		verticaliScrolls[currentPage].scrollTo(0, 0, 200);
 		console.log('Already on this page');
@@ -1534,12 +1569,12 @@ function getInboxScope(selectedInboxScope){ //Scroll to the new page
 	
 	currentInboxScope = selectedInboxScope;	
 	if(currentInboxScope===0){
-		$(".send").toggle();
-		$(".messages").toggle();
+		$(".send").hide();
+		$(".messages").show();
 		verticaliScrolls[2].refresh();
 	}else{
-		$(".messages").toggle();
-		$(".send").toggle();
+		$(".messages").hide();
+		$(".send").show();
 		verticaliScrolls[2].refresh();
 	}
 	console.log("On inbox scope "+selectedInboxScope+"#");
@@ -1625,19 +1660,190 @@ $("#profile .scopeButton").on(clickEvent, function(){ //Mobile touch on navItem
 // start STOP SIGN-----------------
 function showStopSign(){
 	$(".stopSignWrapper").show(function(){
+		$("#dimmer").fadeIn();
 		$(".stopSignWrapper").animate({bottom:"51px"}, 500);
+		stopSignVisible = true;
 	});
 	
-	stopSignVisible = true;
+	
 }
 
 function hideStopSign(){
 	$(".stopSignWrapper").animate({bottom:"-300px"}, 500, function(){
+		$("#dimmer").fadeOut();
 		$(".stopSignWrapper").html('');
 		$(".stopSignWrapper").hide();
+		stopSignVisible = false;
 	});
 	
-	stopSignVisible = false;
+}
+
+function triggerUserInteractionPanel(userID, username){
+
+	var thisUserID = userID;
+	var thisUsername = username; 
+
+	$(".stopSignWrapper").html('');
+
+	var stopSignTitle = document.createElement('div');
+	stopSignTitle.className = "stopSignTitle";
+	stopSignTitle.innerHTML = "Interact with "+thisUsername+"</br></br>";
+	$(".stopSignWrapper").append(stopSignTitle);
+
+	var sendMessageButton = document.createElement('div');
+	sendMessageButton.className = ('formButton');
+	sendMessageButton.innerHTML = 'Send a message';
+	sendMessageButton.addEventListener('click', function(event){
+		event.stopPropagation();
+		hideStopSign();
+		changePage(2);
+		changeInboxScope(1);
+		$("#inbox .formInputText#username").val(thisUsername);
+	});
+	$(".stopSignWrapper").append(sendMessageButton);
+
+	var challengeButton = document.createElement('div');
+	challengeButton.className = ('formButton');
+	challengeButton.innerHTML = 'Issue a challenge';
+	challengeButton.addEventListener('click', function(event){
+		event.stopPropagation();
+		hideStopSign();
+		changePage(0);
+		triggerChallengePanel(null, null, thisUsername);
+	});
+	$(".stopSignWrapper").append(challengeButton);
+	console.log('called!');
+	showStopSign();
+}
+
+function triggerErrorMessage(type, text){
+	var errorType = type;
+	
+	if(stopSignVisible===true){
+		$(".stopSignWrapper").html('');
+	}
+
+	if(errorType == "default"){
+
+		var stopSignTitle = document.createElement('div');
+		stopSignTitle.className = "stopSignTitle";
+		stopSignTitle.innerHTML = "Error</br></br>";
+		$(".stopSignWrapper").append(stopSignTitle);
+
+		var errorText = text || "Uh oh! Something went wrong.. try again.";
+		
+		var stopSignErrorMessage = document.createElement('div');
+		stopSignErrorMessage.className = "stopSignErrorMessage";
+		stopSignErrorMessage.innerHTML = errorText;
+		$(".stopSignWrapper").append(stopSignErrorMessage);
+	}else if(errorType == "notLoggedIn"){
+		var stopSignTitle = document.createElement('div');
+		stopSignTitle.className = "stopSignTitle";
+		stopSignTitle.innerHTML = "Please log in</br></br>";
+		$(".stopSignWrapper").append(stopSignTitle);
+
+		var errorText = text || "Woah there, that's for Gratii members only! You need to be signed in to do that.</br></br>";
+		
+		var stopSignErrorMessage = document.createElement('div');
+		stopSignErrorMessage.className = "stopSignErrorMessage";
+		stopSignErrorMessage.innerHTML = errorText;
+		$(".stopSignWrapper").append(stopSignErrorMessage);
+
+		var backToHomeButton = document.createElement('div');
+		backToHomeButton.className = ('formButton');
+		backToHomeButton.innerHTML = 'Login/Sign up';
+		backToHomeButton.addEventListener(clickEvent, function(event){
+			event.stopPropagation();
+			hideStopSign();
+			$(".homeScreen").show();
+		});
+		$(".stopSignWrapper").append(backToHomeButton);
+	}
+		
+	showStopSign();	
+	
+}
+
+function triggerChallengePanel(gameID, gameTitle, challengeeUsername){
+	
+	var thisGameID = gameID;
+	var thisGameTitle = gameTitle;
+	var thisChallengee = challengeeUsername;
+
+	if(stopSignVisible===true){
+		setTimeout(function(){triggerChallengePanel(thisGameID, thisGameTitle, thisChallengee);}, 100);
+		return;
+	}
+
+	var stopSignTitle = document.createElement('div');
+	stopSignTitle.className = "stopSignTitle";
+	stopSignTitle.innerHTML = "Create a Challenge";
+	$(".stopSignWrapper").append(stopSignTitle);
+
+	var stopSignSubTitle = document.createElement('div');
+	stopSignSubTitle.className = "stopSignSubTitle";
+	stopSignSubTitle.innerHTML = "<b>Rules:</b> Enter your oppenent's name.</br>Enter how much gratii you want to wager.</br>Try to get the highest score you can.</br>No do-overs. Winner takes all!";
+	$(".stopSignWrapper").append(stopSignSubTitle);
+
+	var formWrapper = document.createElement('div');
+	formWrapper.className = ('formWrapper');
+	$(".stopSignWrapper").append(formWrapper);
+
+	var formInputText1 = document.createElement('input');
+	formInputText1.type = ('text');
+	formInputText1.placeholder = ('Opponent\'s username');
+	formInputText1.className = ('formInputText top');
+	formInputText1.id = ('challengee');
+	if(thisChallengee){
+		formInputText1.value = thisChallengee;
+	}
+	formInputText1.addEventListener(clickEvent, function(event){
+		event.stopPropagation();
+	});
+	formWrapper.appendChild(formInputText1);
+
+	var formInputText2 = document.createElement('input');
+	formInputText2.type = ('number');
+	formInputText2.placeholder = ('Enter your wager');
+	formInputText2.className = ('formInputText bottom');
+	formInputText2.id = ('wager');
+	formInputText2.addEventListener(clickEvent, function(event){
+		event.stopPropagation();
+	});
+	formWrapper.appendChild(formInputText2);
+
+	var formInputSelect = document.createElement('select');
+	formInputSelect.className = "challengeSelect";
+	formWrapper.appendChild(formInputSelect);
+
+	var selectOption = document.createElement('option');
+	selectOption.value = '0';
+	selectOption.innerHTML = "Select";
+	formInputSelect.appendChild(selectOption);
+
+	for(var i=0; i<gameObjects.length; i++){
+
+		if(gameObjects[i].challengeable == "1"){
+			var selectOption = document.createElement('option');
+			selectOption.value = gameObjects[i].id;
+			selectOption.innerHTML = gameObjects[i].title;
+			if(gameObjects[i].id == thisGameID){
+				selectOption.setAttribute("selected", "selected");
+			}
+			formInputSelect.appendChild(selectOption);
+		}
+	}
+
+	var formButton = document.createElement('div');
+	formButton.className = ('formButton');
+	formButton.id = ('submitChallenge');
+	formButton.innerHTML = 'Start the challenge!';
+	formButton.addEventListener(clickEvent, function(event){
+		event.stopPropagation();
+	});
+	formWrapper.appendChild(formButton);
+
+	showStopSign();	
 }
 // end STOP SIGN----------------
 
